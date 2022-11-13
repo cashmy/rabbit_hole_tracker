@@ -43,6 +43,12 @@ import PrintIcon from '@mui/icons-material/Print';
 // * Components
 import TitleBar from '../../components/titleBar';
 import NoImage from '../../assets/images/no_image.png';
+import Notification from '../../components/controls/Notification';
+// #endregion
+
+// #region [Customizable imports]
+import PageForm from "./ProjectCardForm";
+import PageDialog from '../page_dialog';
 // #endregion
 
 // *** RTK/Service Layer(s) ***
@@ -61,18 +67,25 @@ import { maxWidth } from '@mui/system';
 
 
 export default function ProjectCards() {
-  // #region [Global State]
+  // #region // [Global State]
   // const dispatch = useDispatch();
   // dispatch(updateComponentTitle("Projects"));
   // const componentTitle = useSelector((state) => state.appHeader.componentTitle);
   // #endregion
+
+  // #region //* [Local State]
   const [archiveStatus, setArchiveStatus] = React.useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [openPopup, setOpenPopup] = useState(false)
   const [currentItem, setCurrentItem] = useState();
+  const [recordForEdit, setRecordForEdit] = useState(null);
+  const [notify, setNotify] = useState({ isOpen: false, message: '', type: 'info' })
   const open = Boolean(anchorEl);
 
   const tempBaseDir = 'http://localhost:8000';
-  // * #region [RTK Data requests]
+  // #endregion
+
+  // #region // * [RTK Data requests]
   const { data = [], loading } = useFetchAllProjectsAdminQuery();
   const [deleteProject] = useDeleteProjectMutation();
   const [changeProjectStatus] = useChangeProjectStatusMutation();
@@ -80,7 +93,36 @@ export default function ProjectCards() {
   const [updateProject] = useUpdateProjectMutation();
   // #endregion
 
-  // * #region [Event Handlers]
+  // #region //* [Event Handlers]
+  const addOrEdit = (record, resetForm) => {
+    let close = false
+    if (record.id === 0) {
+      addProject(record)
+      resetForm()
+      // setLoadData(true); // Request reload of data
+    }
+    else {
+      updateProject(record)
+      // setLoadData(true); // Request reload of data
+      close = true
+    }
+    if (close) {
+      resetForm()
+      setRecordForEdit(null)
+      setOpenPopup(false) // Close Popup modal
+    }
+
+    setNotify({
+      isOpen: true,
+      message: 'Submitted Successfully',
+      type: 'success'
+    })
+  };
+  const handleAdd = () => {
+    setOpenPopup(true);
+    setRecordForEdit(null);
+    // alert("Adding a new item... \nReady for implementation");
+  }
   const handleDelete = (id) => {
     setConfirmDialog({
       isOpen: true,
@@ -107,11 +149,24 @@ export default function ProjectCards() {
   };
   const handleArchive = () => {
     setArchiveStatus(!archiveStatus);
+    alert("Switching Archive Status... \n");
   }
-  const handleArchiveItem = (id) => {
-
-   }
+  const handleArchiveItem = (id, status) => {
+    let body = {
+      id,
+      archived: status,
+    }
+    console.log("Body: ", body);
+    changeProjectStatus(body)
+    // setLoadData(!loadData); // Request reload of data
+    setNotify({
+      isOpen: true,
+      message: status ? "Record Archived" : "Record Re-Activated",
+      type: "error",
+    });
+  }
   const handleMenuClick = (event, item) => {
+    console.log("Menu click item: ", item);
     setAnchorEl(event.currentTarget);
     setCurrentItem(item);
   };
@@ -131,13 +186,14 @@ export default function ProjectCards() {
     >
       {/* //* Page: Card Table Header */}
       <TitleBar
-        componentTitle="Project Cards"
+        componentTitle="Projects"
         addFab={true}
         returnFab={true}
         archiveFab={true}
         archiveStatus={archiveStatus}
         handleArchive={handleArchive}
         searchBar={true}
+        handleAdd={handleAdd}
       />
 
       {/* //* Page: Card Table Body */}
@@ -257,6 +313,11 @@ export default function ProjectCards() {
         ))
       )}
 
+      {/* //* Dialogs, Modals, & Popups */}
+      <Notification notify={notify} setNotify={setNotify} />
+      <PageDialog openPopup={openPopup} setOpenPopup={setOpenPopup} title={"Project Details"} titleColor={"darkblue"} >
+        <PageForm recordForEdit={recordForEdit} addOrEdit={addOrEdit} />
+      </PageDialog>
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
@@ -267,7 +328,7 @@ export default function ProjectCards() {
       >
         {/* //& Archive Item */}
         <MenuItem
-          onClick={() => handleArchiveItem(currentItem.id, currentItem.archived)}
+          onClick={() => handleArchiveItem(currentItem.id, !currentItem.archived)}
           variant="plain"
           color="neutral"
           aria-label={!archiveStatus ? "archive project" : "re-active project"}
@@ -306,6 +367,7 @@ export default function ProjectCards() {
           color="neutral"
           aria-label='print project'
           size="sm"
+          disabled
         >
           <ListItemDecorator>
             <PrintIcon sx={{ color: 'darkcyan' }} />
