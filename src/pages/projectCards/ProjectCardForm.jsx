@@ -95,7 +95,8 @@ const PageForm = (props) => {
           </Grid>
 
           <Grid item xs={12} sx={{ display: "flex", marginTop: theme.spacing(2) }} >
-            {/* <Controls.Button
+            <Controls.Button
+              color="primary"
               type="submit"
               text="Submit"
               onClick={handleSubmit}
@@ -104,7 +105,7 @@ const PageForm = (props) => {
               color="secondary"
               text="Reset"
               onClick={handleReset}
-            /> */}
+            /> 
           </Grid>
         </Grid>
       </Form>

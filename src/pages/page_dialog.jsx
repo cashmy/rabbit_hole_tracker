@@ -86,9 +86,9 @@ export default function PageDialog(props) {
               <MenuItem value="xl">xl</MenuItem>
             </Select>
           </FormControl>
-          {/* <Controls.ActionButton color="secondary" onClick={handleClose}>
+          <Controls.ActionButton color="secondary" onClick={handleClose}>
             <CloseIcon />
-          </Controls.ActionButton> */}
+          </Controls.ActionButton>
         </DialogTitle>
         <DialogContent dividers>
           {children && children}

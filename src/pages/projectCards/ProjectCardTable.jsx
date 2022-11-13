@@ -62,6 +62,7 @@ import {
   useUpdateProjectMutation,
 } from '../../features/projectSlice';
 import { maxWidth } from '@mui/system';
+import ActionButton from '../../components/controls/ActionButton';
 
 // #endregion
 
@@ -123,6 +124,24 @@ export default function ProjectCards() {
     setRecordForEdit(null);
     // alert("Adding a new item... \nReady for implementation");
   }
+  const handleArchive = () => {
+    setArchiveStatus(!archiveStatus);
+    alert("Switching Archive Status... \n");
+  }
+  const handleArchiveItem = (id, status) => {
+    let body = {
+      id,
+      archived: status,
+    }
+    console.log("Body: ", body);
+    changeProjectStatus(body)
+    // setLoadData(!loadData); // Request reload of data
+    setNotify({
+      isOpen: true,
+      message: status ? "Record Archived" : "Record Re-Activated",
+      type: "error",
+    });
+  }
   const handleDelete = (id) => {
     setConfirmDialog({
       isOpen: true,
@@ -147,24 +166,10 @@ export default function ProjectCards() {
       type: "error",
     });
   };
-  const handleArchive = () => {
-    setArchiveStatus(!archiveStatus);
-    alert("Switching Archive Status... \n");
-  }
-  const handleArchiveItem = (id, status) => {
-    let body = {
-      id,
-      archived: status,
-    }
-    console.log("Body: ", body);
-    changeProjectStatus(body)
-    // setLoadData(!loadData); // Request reload of data
-    setNotify({
-      isOpen: true,
-      message: status ? "Record Archived" : "Record Re-Activated",
-      type: "error",
-    });
-  }
+  const handleEdit = (record) => {
+    setRecordForEdit(record);
+    setOpenPopup(true)
+  };
   const handleMenuClick = (event, item) => {
     console.log("Menu click item: ", item);
     setAnchorEl(event.currentTarget);
@@ -262,51 +267,40 @@ export default function ProjectCards() {
                 alignItems: 'right'
               }}>
                 {/* //& MoreVertical */}
-                <Tooltip title="More Options">
-                  <IconButton
-                    id="basic-menu-button"
-                    variant="plain"
-                    color="neutral"
-                    aria-controls={open ? 'basic-menu' : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}
-                    aria-label={`more options for ${item.name}`}
-                    onClick={(e) => {
-                      handleMenuClick(e, item);
-                    }}
-                    size="sm">
-                    <MoreVertIcon sx={{ color: 'darkmagenta' }} />
-                  </IconButton>
-                </Tooltip>
+                <ActionButton
+                  tooltipText="More Options 2"
+                  aria-controls={open ? 'basic-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                  aria-label={`more options for ${item.name}`}
+                  onClick={(e) => {
+                    handleMenuClick(e, item);
+                  }}
+                >
+                  <MoreVertIcon sx={{ color: 'darkmagenta' }} />
+                </ActionButton>
 
                 {/* //& Edit */}
-                <Tooltip title="Edit">
-                  <IconButton
-                    variant="plain"
-                    color="neutral"
-                    aria-label={`edit ${item.name}`}
-                    // onClick={() => {
-                    //   handleEdit(props.item);
-                    // }}
-                    size="sm"
-                  >
-                    <EditOutlinedIcon sx={{ color: 'green' }} />
-                  </IconButton>
-                </Tooltip>
+                <ActionButton
+                  tooltipText="Edit"
+                  aria-label={`edit ${item.name}`}
+                  onClick={() => handleEdit(item)}
+                >
+                  <EditOutlinedIcon sx={{ color: 'green' }} />
+                </ActionButton>
+
 
                 {/* //& Assign Details */}
-                <Tooltip title="Assign Items">
-                  <IconButton
-                    variant="plain"
-                    color="neutral"
-                    aria-label={`Work with ${item.name}`}
-                    // onClick={() => {
-                    //   handleArchiveItem(item);
-                    // }}
-                    size="sm">
-                    <AssignmentIcon sx={{ color: 'darkorange' }} />
-                  </IconButton>
-                </Tooltip>
+                <ActionButton
+                  tooltipText="Assign Details (disabled)"
+                  aria-label={`Work with ${item.name}`}
+                  // onClick={() => {
+                  //   handleArchiveItem(item);
+                  // }}
+                >
+                  <AssignmentIcon sx={{ color: 'darkorange' }} />
+                </ActionButton>
+
               </Box>
             </CardContent>
           </Card>
