@@ -1,5 +1,8 @@
 import React from 'react';
-import { FormControl, FormHelperText, InputLabel, Option, Select as JoySelect } from '@mui/joy'
+import { Option, Select as JoySelect } from '@mui/joy'
+import FormControl from '@mui/joy/FormControl';
+import FormHelperText from '@mui/joy/FormHelperText';
+import { InputLabel } from '@mui/material';
 
 
 const Select = (props) => {

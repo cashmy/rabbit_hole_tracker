@@ -1,5 +1,8 @@
 // import React from 'react';
-import { FormControl, FormControlLabel, FormHelperText, Checkbox as JoyCheckBox } from '@mui/joy'
+import { Checkbox as JoyCheckBox } from '@mui/joy'
+import FormControl  from '@mui/joy/FormControl'
+import FormHelperText  from '@mui/joy/FormHelperText'
+import FormLabel  from '@mui/joy/FormLabel'
 
 const CheckBox = (props) => {
     const { name, label, value, error = null, onChange, labelPlacement, color, ...options } = props
@@ -11,7 +14,7 @@ const CheckBox = (props) => {
         <FormControl variant='outlined' fullWidth
             {...(error && { error: true })}
         >
-            <FormControlLabel
+            <FormLabel
                 labelPlacement={labelPlacement || "end"}
                 control={
                     <JoyCheckBox
@@ -23,7 +26,7 @@ const CheckBox = (props) => {
                         {...options}
                     />}
                 label={label || "checkbox name"}
-            ></FormControlLabel>
+            ></FormLabel>
             {error && <FormHelperText>{error}</FormHelperText>}
         </FormControl>
     )

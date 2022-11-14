@@ -1,11 +1,8 @@
 import React from 'react';
-import {
-  FormControl,
-  FormLabel,
-  FormHelperText,
-  Radio,
-  RadioGroup as JoyRadioGroup
-} from '@mui/joy';
+import {Radio, RadioGroup as JoyRadioGroup } from '@mui/joy';
+import FormLabel from '@mui/joy/FormLabel';
+import FormHelperText from '@mui/joy/FormHelperText';
+import FormControl  from '@mui/joy/FormControl'
 
 export default function RadioGroup(props) {
 

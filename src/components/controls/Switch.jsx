@@ -1,11 +1,8 @@
 import React from 'react';
-import {
-    FormControl,
-    FormControlLabel,
-    FormHelperText,
-    Tooltip,
-    Switch as JoySwitch
-} from '@mui/joy'
+import { Tooltip, Switch as JoySwitch } from '@mui/joy';
+import FormControl from '@mui/joy/FormControl';
+import FormHelperText from '@mui/joy/FormHelperText';
+import FormLabel from '@mui/joy/FormLabel';
 
 
 const Switch = (props) => {
@@ -16,7 +13,7 @@ const Switch = (props) => {
             <FormControl variant='outlined' fullWidth
                 {...(error && { error: true })}
             >
-                <FormControlLabel
+                <FormLabel
                     control={
                         <JoySwitch
                             aria-label={`Toggle ${label || 'switch'} status`}
@@ -34,6 +31,4 @@ const Switch = (props) => {
     )
 }
 
-
-
-export default Switch
+export default Switch;
