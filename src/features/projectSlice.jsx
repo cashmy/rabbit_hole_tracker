@@ -18,7 +18,7 @@ export const apiProjectSlice = createApi({
             // Get All Projects by Archived status
             fetchAllProjectsByArchiveSts: builder.query({
                 query(body) {
-                    return `/archive/${body.status}/`;
+                    return `/archive/${body}/`;
                 },
                 providesTags: ["Projects"],
             }),
@@ -73,7 +73,7 @@ export const apiProjectSlice = createApi({
 });
 
 export const {
-    useFetchAllProjectsByArchiveSts,
+    useFetchAllProjectsByArchiveStsQuery,
     useFetchAllProjectsAdminQuery,
     useAddProjectMutation,
     useUpdateProjectMutation,
