@@ -1,22 +1,24 @@
 import React, { useEffect } from "react";
-import { Grid, useTheme } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
 import Controls from "../../components/controls/Controls";
 import { useForm, Form } from '../../hooks/useForm';
+import theme from '../../theme';
 
 const initialFValues = {
   id: 0,
   name: '',
   abbreviation: '',
   description: '',
-  text_color: '',
-  theme_color: '',
-  image: 0,
+  text_color: '#000000',
+  theme_color: '#00a2ed',
+  user_id: 2,
+  image_id: '1',
   archived: false,
+  image: '',
 }
 
 // * Main component
 const PageForm = (props) => {
-  const theme = useTheme();
   const { addOrEdit, recordForEdit } = props;
 
   // Validation function (to be passed as a callback)
@@ -83,13 +85,27 @@ const PageForm = (props) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Controls.Input
-              variant="soft"
+            <Controls.TextareaAuto
               name="description"
               label="Description"
               value={values.description}
               onChange={handleInputChange}
               error={errors.description}
+              placeholder="Enter a description for the project"
+              minRows={2}
+              maxRows={4}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Controls.Input
+              type="file"
+              variant="soft"
+              name="image"
+              label="Image"
+              size="sm"
+              value={values.image}
+              onChange={handleInputChange}
+              error={errors.image}
               placeholder="Enter a description for the project"
             />
           </Grid>
@@ -105,7 +121,7 @@ const PageForm = (props) => {
               color="secondary"
               text="Reset"
               onClick={handleReset}
-            /> 
+            />
           </Grid>
         </Grid>
       </Form>
