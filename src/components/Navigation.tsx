@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import Box from '@mui/joy/Box';
 import Typography from '@mui/joy/Typography';
 import IconButton from '@mui/joy/IconButton';
@@ -56,20 +57,26 @@ export default function Navigation() {
         >
           {/* My files */}
           <ListItem>
-            <ListItemButton variant="soft" color="primary">
+            <ListItemButton
+              variant="soft"
+              color="primary"
+              component={RouterLink} to="/"
+            >
               <ListItemDecorator sx={{ color: 'inherit' }}>
                 <FolderOpenIcon fontSize="small" />
               </ListItemDecorator>
-              <ListItemContent>My files</ListItemContent>
+              <ListItemContent>Dashboard</ListItemContent>
             </ListItemButton>
           </ListItem>
           {/* Shared Files */}
           <ListItem>
-            <ListItemButton>
+            <ListItemButton
+              component={RouterLink} to="/projects"
+            >
               <ListItemDecorator sx={{ color: 'neutral.500' }}>
                 <AccountTreeIcon fontSize="small" />
               </ListItemDecorator>
-              <ListItemContent>Shared files</ListItemContent>
+              <ListItemContent>Projects</ListItemContent>
             </ListItemButton>
           </ListItem>
           {/* Trash */}

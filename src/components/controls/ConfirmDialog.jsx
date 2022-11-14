@@ -1,13 +1,12 @@
 import React from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Typography, useTheme } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Typography } from '@mui/material';
 import NotListedLocationIcon from '@mui/icons-material/NotListedLocation';
-import {Button} from './Button'
+import Controls from './Controls';
+import theme from '../../theme';
 
 
 export default function ConfirmDialog(props) {
-
     const { confirmDialog, setConfirmDialog } = props;
-    const theme = useTheme();
 
     return (
         <Dialog
@@ -15,25 +14,25 @@ export default function ConfirmDialog(props) {
                 padding: theme.spacing(2),
                 position: 'absolute',
                 top: theme.spacing(6),
+                borderRadius: '25px !important',
+                '& .MuiDialog-paper': {
+                    borderRadius: '12px',
+                }
             }}
             open={confirmDialog.isOpen}
         >
             <DialogTitle sx={{ textAlign: 'center' }}>
                 <IconButton
+                    fontSize='lg'
+                    color="error"
                     sx={{
-                        color: theme.palette.secondary.main,
-                        '& hover': {
-                            color: theme.palette.secondary,
-                            cursor: 'default',
-                        },
                         '& .MuiSvgIcon-root': {
                             fontSize: '8rem',
                         }
                     }}
                     disableRipple
-                    size="large"
                 >
-                    <NotListedLocationIcon />
+                    <NotListedLocationIcon size="lg" />
                 </IconButton>
             </DialogTitle>
             <DialogContent sx={{ textAlign: 'center' }} >
@@ -45,12 +44,12 @@ export default function ConfirmDialog(props) {
                 </Typography>
             </DialogContent>
             <DialogActions sx={{ justifyContent: 'center'}}>
-                <Button
+                <Controls.Button
                     text="No"
                     color="primary"
                     onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}
                 />
-                <Button
+                <Controls.Button
                     text="Yes"
                     color="secondary"
                     onClick={confirmDialog.onConfirm}

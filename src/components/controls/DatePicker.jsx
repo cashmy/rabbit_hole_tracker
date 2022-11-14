@@ -19,9 +19,9 @@
 
 // #region [imports]
 import React from 'react';
-import DateFnsUtils from '@date-io/date-fns';
+// import DateFnsUtils from '@date-io/date-fns';
 import { TextField } from '@mui/joy';
-import { LocalizationProvider, DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
+import { LocalizationProvider, AdapterDayjs, DatePicker as MuiDatePicker } from '@mui/x-date-pickers';
 // #endregion
 
 // *** Main Component ***
@@ -29,14 +29,14 @@ export default function DatePicker(props) {
     const { name, label, value, error = null, onChange, variant, inputVariant, ...others } = props;
 
     return (
-        <LocalizationProvider dateAdapter={DateFnsUtils}
-        >
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
             <MuiDatePicker
                 // disableToolbar 
                 variant={variant || "inline"}
                 inputVariant={inputVariant || "outlined"}
+                views={['year', 'month', 'day']}
                 label={label || 'Date'}
-                format="mm/dd/yyyy"
+                // format="mm/dd/yyyy"
                 name={name || 'sampleDate'}
                 value={value}
                 onChange={(newValue) => onChange(newValue)}

@@ -8,7 +8,7 @@
 
 //#region [General imports]
 import * as React from 'react';
-import { useTheme } from '@mui/material/styles';
+import theme from '../theme';
 import { useNavigate } from 'react-router-dom';
 import {
   Button,
@@ -46,7 +46,6 @@ export default function TitleBar(props) {
     searchBar,
   } = props
 
-  const theme = useTheme();
   const navigate = useNavigate();
   const returnSpace = 2 + (addFab ? 7 : 0);
   const archiveSpace = 2 + (addFab ? 7 : 0) + (returnFab ? 7 : 0);

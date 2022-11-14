@@ -21,10 +21,10 @@ const Controls = {
   DatePicker,
   Input,
   Notification,
-//   Popup,
+  // Popup,
   RadioGroup,
   Select,
-  Switch,
+  // Switch,
   TextareaAuto,
 };
 

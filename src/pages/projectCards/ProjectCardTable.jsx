@@ -56,13 +56,14 @@ import PageDialog from '../page_dialog';
 import {
   useDeleteProjectMutation,
   useFetchAllProjectsAdminQuery,
-  useFetchAllProjectsByArchiveSts,
+  useFetchAllProjectsByArchiveStsQuery,
   useChangeProjectStatusMutation,
   useAddProjectMutation,
   useUpdateProjectMutation,
 } from '../../features/projectSlice';
 import { maxWidth } from '@mui/system';
-import ActionButton from '../../components/controls/ActionButton';
+import Controls from '../../components/controls/Controls';
+
 
 // #endregion
 
@@ -81,13 +82,14 @@ export default function ProjectCards() {
   const [currentItem, setCurrentItem] = useState();
   const [recordForEdit, setRecordForEdit] = useState(null);
   const [notify, setNotify] = useState({ isOpen: false, message: '', type: 'info' })
+  const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
   const open = Boolean(anchorEl);
 
   const tempBaseDir = 'http://localhost:8000';
   // #endregion
 
   // #region // * [RTK Data requests]
-  const { data = [], loading } = useFetchAllProjectsAdminQuery();
+  const { data = [], loading } = useFetchAllProjectsByArchiveStsQuery(archiveStatus);
   const [deleteProject] = useDeleteProjectMutation();
   const [changeProjectStatus] = useChangeProjectStatusMutation();
   const [addProject] = useAddProjectMutation();
@@ -100,11 +102,9 @@ export default function ProjectCards() {
     if (record.id === 0) {
       addProject(record)
       resetForm()
-      // setLoadData(true); // Request reload of data
     }
     else {
       updateProject(record)
-      // setLoadData(true); // Request reload of data
       close = true
     }
     if (close) {
@@ -126,7 +126,6 @@ export default function ProjectCards() {
   }
   const handleArchive = () => {
     setArchiveStatus(!archiveStatus);
-    alert("Switching Archive Status... \n");
   }
   const handleArchiveItem = (id, status) => {
     let body = {
@@ -135,7 +134,6 @@ export default function ProjectCards() {
     }
     console.log("Body: ", body);
     changeProjectStatus(body)
-    // setLoadData(!loadData); // Request reload of data
     setNotify({
       isOpen: true,
       message: status ? "Record Archived" : "Record Re-Activated",
@@ -143,6 +141,7 @@ export default function ProjectCards() {
     });
   }
   const handleDelete = (id) => {
+    console.log("Deleting item: ", id);
     setConfirmDialog({
       isOpen: true,
       title:
@@ -159,7 +158,6 @@ export default function ProjectCards() {
       isOpen: false,
     });
     deleteProject(id)
-    setLoadData(!loadData); // Request reload of data
     setNotify({
       isOpen: true,
       message: "Record deleted",
@@ -167,7 +165,9 @@ export default function ProjectCards() {
     });
   };
   const handleEdit = (record) => {
-    setRecordForEdit(record);
+    const newRecord = { ...record };
+    newRecord['image'] = ''
+    setRecordForEdit(newRecord) ;
     setOpenPopup(true)
   };
   const handleMenuClick = (event, item) => {
@@ -216,9 +216,10 @@ export default function ProjectCards() {
           >
             {/* //& Card Image */}
             <AspectRatio ratio="16/9" color="primary">
+              {/* {console.log("item", item)} */}
               <CardCover>
                 <img
-                  alt={item.image != "" ? item.image.alt_text : item.name}
+                  alt={item.image != "" && item.image != null ? item.image.alt_text : item.name}
                   // src={NoImage}
                   // TODO: Add relative path to image in DB
                   src={item.image != ""
@@ -267,8 +268,8 @@ export default function ProjectCards() {
                 alignItems: 'right'
               }}>
                 {/* //& MoreVertical */}
-                <ActionButton
-                  tooltipText="More Options 2"
+                <Controls.ActionButton
+                  tooltipText="More options"
                   aria-controls={open ? 'basic-menu' : undefined}
                   aria-haspopup="true"
                   aria-expanded={open ? 'true' : undefined}
@@ -278,20 +279,20 @@ export default function ProjectCards() {
                   }}
                 >
                   <MoreVertIcon sx={{ color: 'darkmagenta' }} />
-                </ActionButton>
+                </Controls.ActionButton>
 
                 {/* //& Edit */}
-                <ActionButton
+                <Controls.ActionButton
                   tooltipText="Edit"
                   aria-label={`edit ${item.name}`}
                   onClick={() => handleEdit(item)}
                 >
                   <EditOutlinedIcon sx={{ color: 'green' }} />
-                </ActionButton>
+                </Controls.ActionButton>
 
 
                 {/* //& Assign Details */}
-                <ActionButton
+                <Controls.ActionButton
                   tooltipText="Assign Details (disabled)"
                   aria-label={`Work with ${item.name}`}
                   // onClick={() => {
@@ -299,7 +300,7 @@ export default function ProjectCards() {
                   // }}
                 >
                   <AssignmentIcon sx={{ color: 'darkorange' }} />
-                </ActionButton>
+                </Controls.ActionButton>
 
               </Box>
             </CardContent>
@@ -307,11 +308,13 @@ export default function ProjectCards() {
         ))
       )}
 
-      {/* //* Dialogs, Modals, & Popups */}
+      {/* //* Dialogs, Modals, Menus & Popups */}
       <Notification notify={notify} setNotify={setNotify} />
-      <PageDialog openPopup={openPopup} setOpenPopup={setOpenPopup} title={"Project Details"} titleColor={"darkblue"} >
+      <PageDialog openPopup={openPopup} setOpenPopup={setOpenPopup} title={"Project Details"} titleColor={"darkblue"} pageWidth={'md'} >
         <PageForm recordForEdit={recordForEdit} addOrEdit={addOrEdit} />
       </PageDialog>
+      <Controls.ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
+
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}

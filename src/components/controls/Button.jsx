@@ -1,9 +1,8 @@
 import React from 'react';
-import { useTheme } from '@mui/material/styles';
+import theme from '../../theme';
 import { Button as JoyButton } from '@mui/joy';
 
 const Button = (props) => {
-    const theme = useTheme();
     const { text, size, color, variant, onClick, ...other } = props
 
     const defaultClickHandler = () => {

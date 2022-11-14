@@ -1,9 +1,9 @@
 import React from 'react';
-import { Alert, Snackbar, useTheme } from '@mui/material';
+import { Alert, Snackbar} from '@mui/material';
+import theme from '../../theme';
 
 
 export default function Notification(props) {
-    const theme = useTheme();
     const { notify, setNotify } = props;
 
 

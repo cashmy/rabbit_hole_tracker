@@ -1,24 +1,24 @@
-import TextareaAutosize from '@mui/base/TextareaAutosize';
-import { FormControl, FormLabel, FormHelperText } from '@mui/material'
+import Textarea from '@mui/joy/Textarea';
+import FormControl from '@mui/joy/FormControl'
+import FormHelperText from '@mui/joy/FormHelperText'
+import FormLabel from '@mui/joy/FormLabel'
 
 const TextareaAuto = (props) => {
-  const { name, label, value, error = null, onChange, ...other } = props;
+  const { name, label, value, error = null, size, variant, onChange, ...other } = props;
 
   return (
-    <FormControl 
-      variant = "outlined" 
-      fullWidth
-      {...(error && { error: true }) } 
+    <FormControl
+      {...(error && { error: true })}
     >
-      <TextareaAutosize
-        label={label || "label"}
+      <FormLabel>{label || "label"}</FormLabel>
+      <Textarea
+        variant={variant || "soft"}
+        size={size || "sm"}
         placeholder={label || "label"}
         name={name || "name"}
         aria-label={name || "name"}
         value={value}
         onChange={onChange}
-        fullWidth
-        {...(error && { error: true, helperText: error })}
         {...other}
       />
       {error && <FormHelperText>{error}</FormHelperText>}

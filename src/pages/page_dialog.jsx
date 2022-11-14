@@ -10,7 +10,7 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
-import Sheet from '@mui/Joy/Sheet';
+// import Sheet from '@mui/Joy/Sheet';
 import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 
@@ -23,8 +23,8 @@ import TextContrast from '../helpers/getTextContrast';
 export default function PageDialog(props) {
 
   // #region [Local State]
-  const { title, children, openPopup, setOpenPopup, fullWidth, titleColor } = props
-  const [maxWidth, setMaxWidth] = React.useState('sm');
+  const { title, children, openPopup, setOpenPopup, fullWidth, titleColor, pageWidth } = props
+  const [maxWidth, setMaxWidth] = React.useState(pageWidth || 'sm');
   // #endregion
 
   // * Event Handlers
