@@ -85,7 +85,7 @@ export default function ProjectCards() {
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
   const open = Boolean(anchorEl);
 
-  const tempBaseDir = 'http://localhost:8000';
+  const tempBaseDir = 'http://localhost:8000/';
   // #endregion
 
   // #region // * [RTK Data requests]
@@ -122,7 +122,6 @@ export default function ProjectCards() {
   const handleAdd = () => {
     setOpenPopup(true);
     setRecordForEdit(null);
-    // alert("Adding a new item... \nReady for implementation");
   }
   const handleArchive = () => {
     setArchiveStatus(!archiveStatus);
@@ -166,7 +165,8 @@ export default function ProjectCards() {
   };
   const handleEdit = (record) => {
     const newRecord = { ...record };
-    newRecord['image'] = ''
+    newRecord.file = record.image.file_name
+
     setRecordForEdit(newRecord) ;
     setOpenPopup(true)
   };
@@ -216,17 +216,13 @@ export default function ProjectCards() {
           >
             {/* //& Card Image */}
             <AspectRatio ratio="16/9" color="primary">
-              {/* {console.log("item", item)} */}
               <CardCover>
                 <img
                   alt={item.image != "" && item.image != null ? item.image.alt_text : item.name}
-                  // src={NoImage}
                   // TODO: Add relative path to image in DB
                   src={item.image != ""
                     ? tempBaseDir + item.image.file_name
                     : NoImage}
-                // src="http://localhost:8000/media/images/1621719474446.jpg"
-                // src="https://images.unsplash.com/photo-1534067783941-51c9c23ecefd?auto=format&fit=crop&w=774"
                 />
               </CardCover>
               {/* <CardCover

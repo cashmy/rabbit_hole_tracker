@@ -1,8 +1,12 @@
 import React, { useEffect } from "react";
-import { Grid, TextField } from '@mui/material';
+import { Grid, Input } from '@mui/material';
 import Controls from "../../components/controls/Controls";
 import { useForm, Form } from '../../hooks/useForm';
 import theme from '../../theme';
+import Image from 'mui-image'
+// import { AspectRatio } from "@mui/joy";
+
+const tempServer = "http://localhost:8000";
 
 const initialFValues = {
   id: 0,
@@ -14,12 +18,17 @@ const initialFValues = {
   user_id: 2,
   image_id: '1',
   archived: false,
-  image: '',
+  image: {
+    file_name: "",
+    alt_text: "",
+    mime_type: "",
+    },
 }
 
 // * Main component
 const PageForm = (props) => {
   const { addOrEdit, recordForEdit } = props;
+  const [fileObject, setFileObject] = React.useState("http://localhost:8000/media/No_Image.png");
 
   // Validation function (to be passed as a callback)
   const validate = (fieldValues = values) => {
@@ -39,17 +48,14 @@ const PageForm = (props) => {
     if (fieldValues === values)
       return Object.values(temp).every(x => x === "")
   }
-
   const {
     values,
     setValues,
     errors,
     setErrors,
     handleInputChange,
-    handleToggleChange,
     resetForm,
   } = useForm(initialFValues);
-
   // SaveSubmit Callback handler - event driven
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -61,69 +67,93 @@ const PageForm = (props) => {
       resetForm()
     else setValues({ ...recordForEdit })
   }
+  const handleImageChange = (event) => {
+    setFileObject(URL.createObjectURL(event.target.files[0]))
+  }
+
   useEffect(() => {
-    if (recordForEdit != null)
+    if (recordForEdit != null) {
+
+      setFileObject(tempServer + recordForEdit.image.file_name)
       setValues({
         ...recordForEdit
       })
+    }
+    return function cleanup() {
+      URL.revokeObjectURL(fileObject)
+    }
   }, [recordForEdit])
 
 
   return (
     <React.Fragment>
       <Form>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Controls.Input
-              name="name"
-              label="Name"
-              value={values.name}
-              color="primary"
-              onChange={handleInputChange}
-              error={errors.name}
-              placeholder="Enter a name for the project"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Controls.TextareaAuto
-              name="description"
-              label="Description"
-              value={values.description}
-              onChange={handleInputChange}
-              error={errors.description}
-              placeholder="Enter a description for the project"
-              minRows={2}
-              maxRows={4}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Controls.Input
-              type="file"
-              variant="soft"
-              name="image"
-              label="Image"
-              size="sm"
-              value={values.image}
-              onChange={handleInputChange}
-              error={errors.image}
-              placeholder="Enter a description for the project"
-            />
+        <Grid container spacing={2} >
+          <Grid container spacing={2} item xs={6}>
+            <Grid item xs={12}>
+              <Controls.Input
+                name="name"
+                label="Name"
+                value={values.name}
+                color="primary"
+                onChange={handleInputChange}
+                error={errors.name}
+                placeholder="Enter a name for the project"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Controls.TextareaAuto
+                name="description"
+                label="Description"
+                value={values.description}
+                onChange={handleInputChange}
+                error={errors.description}
+                placeholder="Enter a description for the project"
+                minRows={2}
+                maxRows={4}
+              />
+            </Grid>
           </Grid>
 
-          <Grid item xs={12} sx={{ display: "flex", marginTop: theme.spacing(2) }} >
-            <Controls.Button
-              color="primary"
-              type="submit"
-              text="Submit"
-              onClick={handleSubmit}
-            />
-            <Controls.Button
-              color="secondary"
-              text="Reset"
-              onClick={handleReset}
-            />
+          <Grid container spacing={2} item xs={6}>
+            {/* //& File Input name */}
+            <Grid item xs={12}>
+              <input 
+                type="file" 
+                name="image" 
+                onChange={handleImageChange} 
+                // value={fileName}
+              />
+            </Grid>
+            <Grid item xs={12}>
+                <Image
+                  src={fileObject || ""}
+                  // height="25vh"
+                  duration={3000}
+                  easing="cubic-bezier(0.7, 0, 0.6, 1)"
+                  shift="bottom"
+                  distance="100px"
+                  shiftDuration={1000}
+                  bgColor="inherit"
+                />
+            </Grid>
           </Grid>
         </Grid>
+
+        <Grid item xs={12} sx={{ display: "flex", marginTop: theme.spacing(2) }} >
+          <Controls.Button
+            color="primary"
+            type="submit"
+            text="Submit"
+            onClick={handleSubmit}
+          />
+          <Controls.Button
+            color="secondary"
+            text="Reset"
+            onClick={handleReset}
+          />
+        </Grid>
+        {/* </Grid> */}
       </Form>
     </React.Fragment>
 
