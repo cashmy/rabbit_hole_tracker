@@ -10,26 +10,15 @@ import { Routes, Route } from 'react-router-dom';
 import { GlobalStyles } from '@mui/system';
 import CssBaseline from '@mui/joy/CssBaseline';
 import { CssVarsProvider, styled } from '@mui/joy/styles';
-
-import AspectRatio from '@mui/joy/AspectRatio';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
-import Card from '@mui/joy/Card';
-import CardOverflow from '@mui/joy/CardOverflow';
-import CardCover from '@mui/joy/CardCover';
-import CardContent from '@mui/joy/CardContent';
 import Typography from '@mui/joy/Typography';
-import TextField from '@mui/joy/TextField';
 import IconButton from '@mui/joy/IconButton';
-import ListDivider from '@mui/joy/ListDivider';
 import Sheet from '@mui/joy/Sheet';
-import List from '@mui/joy/List';
-import ListItem from '@mui/joy/ListItem';
 import { Menu, MenuItem, Tooltip } from '@mui/joy';
 
 // * Icons import
 import CloseIcon from '@mui/icons-material/Close';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import MenuIcon from '@mui/icons-material/Menu';
 import FindInPageRoundedIcon from '@mui/icons-material/FindInPageRounded';
 
@@ -48,6 +37,7 @@ import theme from '../theme';
 
 
 import ProjectCards from '../pages/projectCards/ProjectCardTable';
+import TestComponent from '../pages/testComponent/TestComponent';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -205,6 +195,7 @@ function App() {
               <Routes>
                 {/* <Route path="/" element={<Dashboard />} /> */}
                 <Route path="/projects" element={<ProjectCards />} />
+                <Route path="/testComponent" element={<TestComponent />} />
               </Routes>
 
 

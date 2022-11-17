@@ -55,7 +55,7 @@ export default function Navigation() {
             '& .JoyListItemButton-root': { p: '8px' },
           }}
         >
-          {/* My files */}
+          {/* //& Dashboard */}
           <ListItem>
             <ListItemButton
               variant="soft"
@@ -68,7 +68,8 @@ export default function Navigation() {
               <ListItemContent>Dashboard</ListItemContent>
             </ListItemButton>
           </ListItem>
-          {/* Shared Files */}
+
+          {/* //& Projects*/}
           <ListItem>
             <ListItemButton
               component={RouterLink} to="/projects"
@@ -79,18 +80,34 @@ export default function Navigation() {
               <ListItemContent>Projects</ListItemContent>
             </ListItemButton>
           </ListItem>
-          {/* Trash */}
+
+
+          {/* //& Test Component*/}
           <ListItem>
+            <ListItemButton
+              component={RouterLink} to="/testComponent"
+            >
+              <ListItemDecorator sx={{ color: 'neutral.500' }}>
+                <AccountTreeIcon fontSize="small" />
+              </ListItemDecorator>
+              <ListItemContent>Test Component</ListItemContent>
+            </ListItemButton>
+          </ListItem>
+
+          {/* //& Trash */}
+          {/* <ListItem>
             <ListItemButton>
               <ListItemDecorator sx={{ color: 'neutral.500' }}>
                 <DeleteRoundedIcon fontSize="small" />
               </ListItemDecorator>
               <ListItemContent>Trash</ListItemContent>
             </ListItemButton>
-          </ListItem>
+          </ListItem> */}
+          
         </List>
       </ListItem>
-      {/* Nested List */}
+
+      {/* //& Tags: Nested List */}
       <ListItem nested>
         <Box
           sx={{
