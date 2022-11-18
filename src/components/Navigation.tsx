@@ -9,12 +9,14 @@ import ListItemButton from '@mui/joy/ListItemButton';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
 import ListItemContent from '@mui/joy/ListItemContent';
 
-// Icons import
+// * Icons import
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import BiotechIcon from '@mui/icons-material/Biotech';
+import ImageTwoToneIcon from '@mui/icons-material/ImageTwoTone';
 
 export default function Navigation() {
   return (
@@ -75,12 +77,23 @@ export default function Navigation() {
               component={RouterLink} to="/projects"
             >
               <ListItemDecorator sx={{ color: 'neutral.500' }}>
-                <AccountTreeIcon fontSize="small" />
+                <AccountTreeIcon />
               </ListItemDecorator>
               <ListItemContent>Projects</ListItemContent>
             </ListItemButton>
           </ListItem>
 
+          {/* //& Image Library*/}
+          <ListItem>
+            <ListItemButton
+              component={RouterLink} to="/projects"
+            >
+              <ListItemDecorator sx={{ color: 'neutral.500' }}>
+                <ImageTwoToneIcon />
+              </ListItemDecorator>
+              <ListItemContent>Image Library</ListItemContent>
+            </ListItemButton>
+          </ListItem>
 
           {/* //& Test Component*/}
           <ListItem>
@@ -88,7 +101,7 @@ export default function Navigation() {
               component={RouterLink} to="/testComponent"
             >
               <ListItemDecorator sx={{ color: 'neutral.500' }}>
-                <AccountTreeIcon fontSize="small" />
+                <BiotechIcon />
               </ListItemDecorator>
               <ListItemContent>Test Component</ListItemContent>
             </ListItemButton>

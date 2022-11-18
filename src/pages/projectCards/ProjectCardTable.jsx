@@ -171,7 +171,6 @@ export default function ProjectCards() {
     setOpenPopup(true)
   };
   const handleMenuClick = (event, item) => {
-    console.log("Menu click item: ", item);
     setAnchorEl(event.currentTarget);
     setCurrentItem(item);
   };
@@ -189,9 +188,12 @@ export default function ProjectCards() {
         gap: 2,
       }}
     >
-      {/* //* Page: Card Table Header */}
+      {/* //* Page: Card Table Header */} 
       <TitleBar
         componentTitle="Projects"
+        avatarIcon="icon"
+        // avatarImage="http://localhost:8000/media/gary-bendig-KvHT4dltPEQ-unsplash.jpg"
+        avatarImage={<AccountTreeIcon />}
         addFab={true}
         returnFab={true}
         archiveFab={true}

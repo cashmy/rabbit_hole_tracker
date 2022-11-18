@@ -147,6 +147,7 @@ function App() {
                     <Avatar
                       alt="Remy Sharp"
                       src="./src/assets/images/avatar-lg.jpg"
+                      size="md"
                       {...stringAvatar('Remy Sharp')}
                     />
                   </IconButton>

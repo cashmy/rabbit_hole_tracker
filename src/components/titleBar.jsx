@@ -11,6 +11,7 @@ import * as React from 'react';
 import theme from '../theme';
 import { useNavigate } from 'react-router-dom';
 import {
+  Avatar,
   Button,
   IconButton,
   Sheet,
@@ -24,17 +25,20 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import Inventory2TwoToneIcon from '@mui/icons-material/Inventory2TwoTone';
 import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';
+import { AccountTree } from '@mui/icons-material';
 //#endregion
 
 export default function TitleBar(props) {
   const {
+    avatarIcon = "none",
+    avatarImage = "",
     componentTitle,
 
     addFab,
     primaryColor,
     addToolTip,
     handleAdd,
-    
+
     returnFab,
     secondaryColor,
 
@@ -66,7 +70,7 @@ export default function TitleBar(props) {
         gridColumn: '1/-1',
         bgcolor: 'background.componentBg',
         display: { xs: 'none', sm: 'grid' },
-        gridTemplateColumns: '1fr 1fr 1fr 1fr',
+        gridTemplateColumns: '.1fr 1fr 2fr 1fr .1fr .1fr .1fr',
         '& > *': {
           p: 2,
           '&:nth-of-type(n):not(:nth-last-of-type(-n+4))': {
@@ -76,40 +80,64 @@ export default function TitleBar(props) {
         },
       }}
     >
-      <Typography variant='h4' sx={{marginLeft: 1.5, marginTop: .25}} >
+      {/* //& Avatar/Icon/None */}
+      {avatarIcon == "image" &&
+        <IconButton size="xl" variant="plain" >
+          <Avatar
+            src={`${avatarImage}`}
+            alt="project avatar"
+          />
+        </IconButton>
+      }
+      {avatarIcon == "icon" &&
+        <IconButton
+          size="lg"
+          variant="plain"
+        >
+          {avatarImage}
+        </IconButton>
+      }
+      {avatarIcon == "none" && <Typography />}
+
+      {/* //& Component Title */}
+      <Typography variant='h4' sx={{ marginLeft: 1.5, marginTop: .25 }} >
         {componentTitle || "Component Title Goes Here"}
       </Typography>
 
-      {/* Search bar area */}
+      {/* //& Search Bar */}
+      {!searchBar && <Typography />}
       {searchBar && (
-      <TextField
-        size="sm"
-        placeholder="Search projects by name"
-        startDecorator={<SearchRoundedIcon color="primary" />}
-        endDecorator={
-          <IconButton variant="outlined" size="sm" color="neutral" onClick={() => alert('/ clicked')}>
-            <Typography fontWeight="lg" fontSize="sm" textColor="text.tertiary">
-              /
-            </Typography>
-          </IconButton>
-        }
-        sx={{
-          flexBasis: '500px',
-          display: {
-            xs: 'none',
-            sm: 'flex',
-          },
-        }}
-      />
+        <TextField
+          size="sm"
+          placeholder="Search projects by name"
+          startDecorator={<SearchRoundedIcon color="primary" />}
+          endDecorator={
+            <IconButton variant="outlined" size="sm" color="neutral" onClick={() => alert('/ clicked')}>
+              <Typography fontWeight="lg" fontSize="sm" textColor="text.tertiary">
+                /
+              </Typography>
+            </IconButton>
+          }
+          sx={{
+            flexBasis: '500px',
+            display: {
+              xs: 'none',
+              sm: 'flex',
+            },
+          }}
+        />
       )}
 
+      <Typography /> {/* //& Spacer */}
+
+      {/* //& Optional Arkcive Button */}
       {archiveFab && (
-        <Tooltip title={"Switch to " + (!archiveStatus ?  "Archive" : "Active")} >
+        <Tooltip title={"Switch to " + (!archiveStatus ? "Archive" : "Active")} >
           <Button
-            sx={{ 
-              m: 1.5, 
-              position: "absolute", 
-              right: theme.spacing(archiveSpace)
+            sx={{
+              m: 1.5,
+              // position: "absolute", 
+              // right: theme.spacing(archiveSpace)
             }}
             color={archiveColor || "info"}
             aria-label="return to previous display"
@@ -122,13 +150,14 @@ export default function TitleBar(props) {
         </Tooltip>
       )}
 
+      {/* //& Optional Return Button */}
       {returnFab && (
         <Tooltip title="Return to previous display">
           <Button
-            sx={{ 
-              m: 1.5, 
-              position: "absolute", 
-              right: theme.spacing(returnSpace)
+            sx={{
+              m: 1,
+              // position: "absolute", 
+              // right: theme.spacing(returnSpace)
             }}
             color={secondaryColor || "secondary"}
             aria-label="return to previous display"
@@ -140,13 +169,14 @@ export default function TitleBar(props) {
         </Tooltip>
       )}
 
+      {/* //& Optional Add Button */}
       {addFab && (
         <Tooltip title={addToolTip || "Add a new item"}>
           <Button
             sx={{
               m: 1.5,
-              position: "absolute",
-              right: theme.spacing(1)
+              // position: "absolute",
+              // right: theme.spacing(1)
             }}
             color={primaryColor || "primary"}
             aria-label={addToolTip || "Add a new item"}
