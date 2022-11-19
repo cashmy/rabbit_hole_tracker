@@ -86,7 +86,7 @@ export default function Navigation() {
           {/* //& Image Library*/}
           <ListItem>
             <ListItemButton
-              component={RouterLink} to="/projects"
+              component={RouterLink} to="/imageLibrary"
             >
               <ListItemDecorator sx={{ color: 'neutral.500' }}>
                 <ImageTwoToneIcon />

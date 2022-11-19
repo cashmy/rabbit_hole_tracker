@@ -38,6 +38,9 @@ import theme from '../theme';
 
 import ProjectCards from '../pages/projectCards/ProjectCardTable';
 import TestComponent from '../pages/testComponent/TestComponent';
+import ImageLibraryTable from '../pages/imageLibrary/ImageLibraryTable';
+import SignInSide from '../pages/signIn/SignInSide';
+import RegistrationSide from '../pages/signIn/RegistrationSide';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -132,7 +135,7 @@ function App() {
 
             {/* //* Center Component Title */}
             <Typography fontWeight="lg" fontSize="md" textColor="text.tertiary">
-              {componentTitle}
+              {/* {componentTitle} */}
             </Typography>
 
             {/* // * Right Hand side of Header */}
@@ -152,6 +155,7 @@ function App() {
                     />
                   </IconButton>
                 </Tooltip>
+
                 <Menu
                   sx={{ mt: '45px' }}
                   id="menu-appbar"
@@ -174,6 +178,7 @@ function App() {
                     </MenuItem>
                   ))}
                 </Menu>
+                
               </Box>
             </Box>
           </Layout.Header>
@@ -196,7 +201,11 @@ function App() {
               <Routes>
                 {/* <Route path="/" element={<Dashboard />} /> */}
                 <Route path="/projects" element={<ProjectCards />} />
+                <Route path="/imageLibrary" element={<ImageLibraryTable />} />
                 <Route path="/testComponent" element={<TestComponent />} />
+                <Route path="/registration" element={<RegistrationSide />} />
+                <Route path="/login" element={<SignInSide/>} />
+                {/* <Route path="*" element={<Navigate to="/projects" />} /> */}
               </Routes>
 
 
