@@ -17,9 +17,9 @@ import {
   Sheet,
   TextField,
   Tooltip,
-  Typography
+  // Typography
 } from '@mui/joy';
-import { Fab } from '@mui/material';
+import { Fab, Typography } from '@mui/material';
 import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
@@ -70,7 +70,7 @@ export default function TitleBar(props) {
         gridColumn: '1/-1',
         bgcolor: 'background.componentBg',
         display: { xs: 'none', sm: 'grid' },
-        gridTemplateColumns: '.1fr 1fr 2fr 1fr .1fr .1fr .1fr',
+        gridTemplateColumns: '.1fr 1fr 1fr .5fr .1fr .1fr .1fr',
         '& > *': {
           p: 2,
           '&:nth-of-type(n):not(:nth-last-of-type(-n+4))': {
@@ -100,7 +100,7 @@ export default function TitleBar(props) {
       {avatarIcon == "none" && <Typography />}
 
       {/* //& Component Title */}
-      <Typography variant='h4' sx={{ marginLeft: 1.5, marginTop: .25 }} >
+      <Typography variant='h6' sx={{ marginLeft: 1.5, marginTop: .25 }} >
         {componentTitle || "Component Title Goes Here"}
       </Typography>
 

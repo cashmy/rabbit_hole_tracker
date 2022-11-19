@@ -4,15 +4,12 @@
  * @create date 2022-11-11 22:22:03
  * @modify date 2022-11-11 22:22:03
  * @desc Template for a table like page.
- * TODO - Add Detail form/modal in imports & Controls.popup
  */
 
 // #region [General Imports]
 import { useState } from 'react';
 import { format } from 'date-fns';
-// * Redux
-import { useSelector, useDispatch } from 'react-redux';
-import { updateComponentTitle } from '../../features/appHeader/appHeaderSlice';
+
 // * Joy UI
 import {
   AspectRatio,
@@ -20,12 +17,9 @@ import {
   Card,
   CardContent,
   CardCover,
-  CardOverflow,
-  IconButton,
   ListItemDecorator,
   Menu,
   MenuItem,
-  Tooltip,
   Typography
 } from '@mui/joy'
 import React from 'react'
@@ -69,11 +63,6 @@ import Controls from '../../components/controls/Controls';
 
 
 export default function ProjectCards() {
-  // #region // [Global State]
-  // const dispatch = useDispatch();
-  // dispatch(updateComponentTitle("Projects"));
-  // const componentTitle = useSelector((state) => state.appHeader.componentTitle);
-  // #endregion
 
   // #region //* [Local State]
   const [archiveStatus, setArchiveStatus] = React.useState(false);

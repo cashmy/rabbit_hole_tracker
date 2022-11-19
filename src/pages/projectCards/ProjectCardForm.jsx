@@ -1,3 +1,6 @@
+// TODO: Replace defaulted user with login user
+// TODO: Replace "tempServer" with a variable that can be set in the .env file
+
 import React, { useEffect } from "react";
 import { Grid, Input } from '@mui/material';
 import Controls from "../../components/controls/Controls";
@@ -22,7 +25,7 @@ const initialFValues = {
     file_name: "",
     alt_text: "",
     mime_type: "",
-    },
+  },
 }
 
 // * Main component
@@ -73,7 +76,6 @@ const PageForm = (props) => {
 
   useEffect(() => {
     if (recordForEdit != null) {
-
       setFileObject(tempServer + recordForEdit.image.file_name)
       setValues({
         ...recordForEdit
@@ -117,25 +119,24 @@ const PageForm = (props) => {
 
           <Grid container spacing={2} item xs={6}>
             {/* //& File Input name */}
+            {/* This field is intentionally uncontrolled */}
             <Grid item xs={12}>
-              <input 
-                type="file" 
-                name="image" 
-                onChange={handleImageChange} 
-                // value={fileName}
+              <input
+                type="file"
+                name="image"
+                onChange={handleImageChange}
               />
             </Grid>
             <Grid item xs={12}>
-                <Image
-                  src={fileObject || ""}
-                  // height="25vh"
-                  duration={3000}
-                  easing="cubic-bezier(0.7, 0, 0.6, 1)"
-                  shift="bottom"
-                  distance="100px"
-                  shiftDuration={1000}
-                  bgColor="inherit"
-                />
+              <Image
+                src={fileObject || ""}
+                duration={3000}
+                easing="cubic-bezier(0.7, 0, 0.6, 1)"
+                shift="bottom"
+                distance="100px"
+                shiftDuration={1000}
+                bgColor="inherit"
+              />
             </Grid>
           </Grid>
         </Grid>
@@ -153,7 +154,6 @@ const PageForm = (props) => {
             onClick={handleReset}
           />
         </Grid>
-        {/* </Grid> */}
       </Form>
     </React.Fragment>
 

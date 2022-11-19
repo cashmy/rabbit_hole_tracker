@@ -30,7 +30,7 @@ const muiTheme = extendMuiTheme({
           main: colors.yellow[200],
         },
         common: {
-          white: '#FFF',
+          white: '#ffffff',
           black: '#09090D',
         },
         divider: colors.grey[200],
@@ -98,19 +98,19 @@ const joyTheme = extendJoyTheme({
         root: ({ownerState, theme}) => ({
           ...(ownerState.size === 'xs' && {
             '--Avatar-size': '1.5rem',
-            width: 'var(--Avatar-minHeight, 1.5rem)',
+            width: 'var(--Avatar-minWidth, 1.5rem)',
             height: 'var(--Avatar-minHeight, 1.5rem)',
             fontSize: theme.vars.fontSize.xs,
           }),
           ...(ownerState.size === 'xl' && {
             '--Avatar-size': '3.5rem',
-            width: 'var(--Avatar-minHeight, 3.5rem)',
+            width: 'var(--Avatar-minWidth, 3.5rem)',
             height: 'var(--Avatar-minHeight, 3.5rem)',
             fontSize: theme.vars.fontSize.xl,
           }),
           ...(ownerState.size === 'xxl' && {
             '--Avatar-size': '4rem',
-            width: 'var(--Avatar-minHeight, 4rem)',
+            width: 'var(--Avatar-minWidth, 4rem)',
             height: 'var(--Avatar-minHeight, 4rem)',
             fontSize: theme.vars.fontSize.xxl,
           }),

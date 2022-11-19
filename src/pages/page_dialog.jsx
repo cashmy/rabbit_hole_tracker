@@ -42,7 +42,7 @@ export default function PageDialog(props) {
     <React.Fragment>
       <Dialog
         fullWidth={fullWidth || true}
-        maxWidth={maxWidth} 
+        maxWidth={maxWidth}
         open={openPopup}
         onClose={handleClose}
       >
@@ -52,14 +52,13 @@ export default function PageDialog(props) {
               padding: theme.spacing(1),
               marginRight: theme.spacing(3),
               backgroundColor: titleColor || "rgba(0, 0, 0, 0.2)",
-              color: TextContrast.getTextContrast(titleColor || "rgba(0, 0, 0, 0.2)"),
               flexGrow: 1,
               mt: theme.spacing(2)
             }}
           >
             <Typography
               variant="h5"
-              // component="div"
+              sx={{color: TextContrast.getTextContrast(titleColor || "rgba(0, 0, 0, 0.2)"),}}
             >
               {title || "Dialog Title"}
             </Typography>
