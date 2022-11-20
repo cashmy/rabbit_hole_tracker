@@ -120,7 +120,6 @@ export default function ProjectCards() {
       id,
       archived: status,
     }
-    console.log("Body: ", body);
     changeProjectStatus(body)
     setNotify({
       isOpen: true,
@@ -129,7 +128,6 @@ export default function ProjectCards() {
     });
   }
   const handleDelete = (id) => {
-    console.log("Deleting item: ", id);
     setConfirmDialog({
       isOpen: true,
       title:
