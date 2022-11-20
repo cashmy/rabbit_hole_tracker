@@ -32,8 +32,8 @@ export default function Navigation() {
         >
           <Typography
             id="nav-list-browse"
-            textColor="neutral.500"
             fontWeight={700}
+            textColor="neutral.500"  // TODO fix this 
             sx={{
               fontSize: '10px',
               textTransform: 'uppercase',
@@ -95,6 +95,18 @@ export default function Navigation() {
             </ListItemButton>
           </ListItem>
 
+          {/* //& Image Library*/}
+          <ListItem>
+            <ListItemButton
+              component={RouterLink} to="/imageLibraryV1"
+            >
+              <ListItemDecorator sx={{ color: 'neutral.500' }}>
+                <ImageTwoToneIcon />
+              </ListItemDecorator>
+              <ListItemContent>Image Library (v1) </ListItemContent>
+            </ListItemButton>
+          </ListItem>
+
           {/* //& Test Component*/}
           <ListItem>
             <ListItemButton
@@ -107,15 +119,7 @@ export default function Navigation() {
             </ListItemButton>
           </ListItem>
 
-          {/* //& Trash */}
-          {/* <ListItem>
-            <ListItemButton>
-              <ListItemDecorator sx={{ color: 'neutral.500' }}>
-                <DeleteRoundedIcon fontSize="small" />
-              </ListItemDecorator>
-              <ListItemContent>Trash</ListItemContent>
-            </ListItemButton>
-          </ListItem> */}
+
           
         </List>
       </ListItem>

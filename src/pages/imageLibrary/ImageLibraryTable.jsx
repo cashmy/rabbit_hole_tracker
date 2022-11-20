@@ -1,41 +1,44 @@
 /**
  * @author Cash Myers
  * @github [https://github.com/cashmy]
- * @create date 2022-11-17 22:22:03
- * @modify date 2022-11-17 22:22:03
+ * @create date 2022-11-19 22:22:03
+ * @modify date 2022-11-19 22:22:03
  * @desc Admin for Image Library maintanence.
+ * @desc //* New Version 2!!!
  */
 
 // #region [General Imports]
-import { useState } from 'react';
-import { format } from 'date-fns';
+import React, { useState, Fragment } from 'react';
+
 // * Joy UI
 import {
   AspectRatio,
   Box,
+  Button,
   Card,
   CardContent,
   CardCover,
-  CardOverflow,
   ListItemDecorator,
   Menu,
   MenuItem,
-  // Typography
+  Sheet,
+  Typography
 } from '@mui/joy'
-import { Typography } from '@mui/material';
-import React from 'react'
+// import { Typography } from '@mui/material';
+
+// * Components
+import ImageUploading from 'react-images-uploading';
+import TitleBar from '../../components/titleBar';
+import Notification from '../../components/controls/Notification';
+import Controls from '../../components/controls/Controls';
 
 // * Mui Icons
+import BiotechIcon from '@mui/icons-material/Biotech';
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ImageTwoToneIcon from '@mui/icons-material/ImageTwoTone';
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-
-// * Components
-import TitleBar from '../../components/titleBar';
-import NoImage from '../../assets/images/no_image.png';
-import Notification from '../../components/controls/Notification';
-import Controls from '../../components/controls/Controls';
 // #endregion
 
 // #region [Customizable imports]
@@ -56,14 +59,17 @@ import {
 
 
 export default function ImageLibraryTable() {
-
   // #region //* [Local State]
+  const [images, setImages] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [openPopup, setOpenPopup] = useState(false)
   const [recordForEdit, setRecordForEdit] = useState(null);
   const [currentItem, setCurrentItem] = useState();
   const [notify, setNotify] = useState({ isOpen: false, message: '', type: 'info' })
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
+
+
+  const maxNumber = 69;
   const open = Boolean(anchorEl);
 
   const tempBaseDir = 'http://localhost:8000/';
@@ -76,16 +82,7 @@ export default function ImageLibraryTable() {
   const [updateImage] = useUpdateImageMutation();
   // #endregion
 
-  // * Helper function to convert "record" to "formData"
-  // Since Django converts the name to a relative path, 
-  //    and the image is stored in the "media" folder,
-  //    the image itself does not need to be sent to the server for updates.
-  //    Only the "alt_text" field needs to be sent.
-  //
-  // The "file_name" is converted to the fileObject from the event.target.files[0] object.
-  //    This is only required for Add mode.
-  // The record is converted to a formData object for the backend server.
-  //
+  // #region //* [Event Handlers]
   const convertToFormData = (obj, mode) => {
     const formData = new FormData();
     Object.keys(obj).forEach((key) => {
@@ -96,10 +93,10 @@ export default function ImageLibraryTable() {
           formData.append(key, obj[key]);
         }
       } else {
-        if((key == 'user' || key == 'user_id') && obj[key] == null){
+        if ((key == 'user' || key == 'user_id') && obj[key] == null) {
           formData.append(key, 2);
         } else {
-        formData.append(key, obj[key]);
+          formData.append(key, obj[key]);
         }
       }
       // formData.append('user', 2);
@@ -112,19 +109,29 @@ export default function ImageLibraryTable() {
     return body;
   };
 
-  // #region //* [Event Handlers]
+  const handleImageAddAll = (imageList, onImageRemoveAll) => {
+    let imageURL = {}
+  
+    imageList.forEach((image) => {
+      let formData = new FormData();
+      formData.append('file_name', image.file);
+      formData.append('alt_text', image.file.name);
+      formData.append('user', 2);
+      formData.append('user_id', 2);
+      formData.append('file_size', image.file.size);
+      formData.append('mime_type', image.file.type);
+    
+      addImage(formData)
+    })
+    onImageRemoveAll()
+  }
+
   const addOrEdit = (record, resetForm) => {
     let close = false
 
+    updateImage(convertToFormData(record, 'edit'))
+    close = true
 
-    if (record.id === 0) {
-      addImage(convertToFormData(record, 'add'))
-      resetForm()
-    }
-    else {
-      updateImage(convertToFormData(record, 'edit'))
-      close = true
-    }
     if (close) {
       resetForm()
       setRecordForEdit(null)
@@ -137,10 +144,6 @@ export default function ImageLibraryTable() {
       type: 'success'
     })
   };
-  const handleAdd = () => {
-    setOpenPopup(true);
-    setRecordForEdit(null);
-  }
   const handleDelete = (id) => {
     setConfirmDialog({
       isOpen: true,
@@ -168,6 +171,13 @@ export default function ImageLibraryTable() {
     setRecordForEdit(record);
     setOpenPopup(true)
   };
+  const onChange = (imageList, addUpdateIndex) => {
+    setImages(imageList);
+  };
+  const handleClickEvent = (event, index, onImageUpdate, onImageRemove) => {
+    if (event.shiftKey) onImageRemove(index)
+    else onImageUpdate(index)
+  }
   const handleMenuClick = (event, item) => {
     setAnchorEl(event.currentTarget);
     setCurrentItem(item);
@@ -178,101 +188,291 @@ export default function ImageLibraryTable() {
   };
   // #endregion
 
+
   return (
     <Box
       sx={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-        gap: 1.5,
+        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+        gap: 2,
       }}
     >
-      {/* //* Page: Card Table Header */}
+      {/* //* Page: Test Component Header */}
       <TitleBar
         componentTitle="Image Library"
         avatarIcon="icon"
-        avatarImage={<ImageTwoToneIcon />}
-        addFab={true}
-        searchBar={true}
-        handleAdd={handleAdd}
+        avatarImage={<BiotechIcon />}
       />
 
-      {/* //* Page: Card Table Body */}
-      {loading ? (
-        <Typography>Loading...</Typography>
-      ) : (
-        data.map((item, index) => (
-          <Card
-            key={index}
+      {/* //* Component Pannel */}
+      <Box
+        sx={{
+          // maxWidth: '75vw',
+          width: 'calc(100vw - 240px)',
+          height: 'calc(100vh - 180px)',
+        }}
+      >
+        <Sheet
+          elevation={10}
+          sx={{
+            borderRadius: '10px',
+            overflowY: 'auto',
+            width: '100%',
+            height: '100%',
+          }}
+        >
+          <Box
             sx={{
-              '--Card-radius': (theme) => theme.vars.radius.sm,
-              boxShadow: 'none',
-              width: '150px'
-            }}
-          >
-            <CardOverflow>
-              {/* //& Card Image */}
-              <AspectRatio ratio="4/3" color="primary">
-                <CardCover>
-                  <img
-                    alt={item.image != "" && item.image != null ? item.image.alt_text : item.name}
-                    src={item.image != ""
-                      ? tempBaseDir + item.file_name
-                      : NoImage}
-                  />
-                </CardCover>
-              </AspectRatio>
-              {/* //& Card Data & Actions*/}
-              <CardContent
+              display: 'grid',
+              gridTemplateColumns: '6fr 3fr',
+            }}>
+
+            {/* //* Display Pane of existing Images */}
+            <Box
+              sx={{
+                height: 'calc(100vh - 220px)',
+                m: 2,
+                // backgroundColor: 'grey.400',
+                borderRadius: '10px',
+
+              }}
+            >
+              <Sheet
                 sx={{
-                  mt: 'auto',
-                  flexGrow: 0,
-                  flexDirection: 'column',
-                  alignItems: 'end',
-                  justifyContent: 'space-between',
+                  width: '100%',
+                  height: '100%',
+                  maxHeight: '100%',
+                  bgcolor: 'background.componentBg',
+                  overflowY: 'auto',
+                  borderRadius: '10px',
                 }}
               >
                 <Box
                   sx={{
-                    pt: 2,
+                    m: 3,
                   }}
+                  display="grid"
+                  gridTemplateColumns='repeat(auto-fit, minmax(150px, 1fr))'
                 >
-                  <Typography variant="body3">
-                    {(item.alt_text.length > 13) && (item.id != 1)
-                      ? item.alt_text.substring(0, 11) + '...'
-                      : item.alt_text}
-                  </Typography>
-                  {/* //& MoreVertical */}
-                  {item.id != 1 &&
-                    <Controls.ActionButton
-                      size="sm"
-                      tooltipText="More options"
-                      aria-controls={open ? 'basic-menu' : undefined}
-                      aria-haspopup="true"
-                      aria-expanded={open ? 'true' : undefined}
-                      aria-label={`more options for ${item.name}`}
-                      onClick={(e) => {
-                        handleMenuClick(e, item);
+                  {/* //& Page: Card Table Body */}
+                  {loading ? (
+                    <Typography>Loading...</Typography>
+                  ) : (
+                    data.map((item, index) => (
+                      <Card
+                        key={index}
+                        sx={{
+                          m: 1,
+                          p: 1,
+                          '--Card-radius': (theme) => theme.vars.radius.sm,
+                          boxShadow: 'none',
+                          width: '150px',
+                        }}
+                      >
+                        {/* //& Card Image */}
+                        <AspectRatio ratio="4/3" color="primary">
+                          <CardCover
+                            sx={{ cursor: 'pointer' }}
+                            onClick={() => { alert('Selected for use. Image Id: ' + item.id) }}
+                          >
+                            <img
+                              alt={item.image != "" && item.image != null ? item.image.alt_text : item.name}
+                              src={item.image != ""
+                                ? tempBaseDir + item.file_name
+                                : NoImage}
+                            />
+                          </CardCover>
+                        </AspectRatio>
+                        <CardContent
+                          sx={{
+                            mt: 'auto',
+                            flexGrow: 0,
+                            flexDirection: 'column',
+                            alignItems: 'end',
+                            justifyContent: 'space-between',
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              pt: 2,
+                              display: 'flex',
+                              flex: 'flex-row',
+                              alignItems: 'center',
+                            }} >
+                            <Typography level="body2">
+                              {(item.alt_text.length > 13) && (item.id != 1)
+                                ? item.alt_text.substring(0, 11) + '...'
+                                : item.alt_text}
+                            </Typography>
+
+                            {/* //& MoreVertical */}
+                            {item.id != 1 &&
+                              <Controls.ActionButton
+                                size="sm"
+                                tooltipText="More options"
+                                aria-controls={open ? 'basic-menu' : undefined}
+                                aria-haspopup="true"
+                                aria-expanded={open ? 'true' : undefined}
+                                aria-label={`more options for ${item.name}`}
+                                onClick={(e) => {
+                                  handleMenuClick(e, item);
+                                }}
+                              >
+                                <MoreVertIcon sx={{ color: 'darkmagenta' }} />
+                              </Controls.ActionButton>
+                            }
+
+                          </Box>
+                        </CardContent>
+                      </Card>
+                    )))}
+
+                </Box>
+              </Sheet>
+            </Box>
+
+            {/* //* Right Hand Column */}
+            <Box
+              sx={{
+                m: 2,
+                borderRadius: '10px',
+                display: 'grid',
+                gridTemplateRows: '2fr 6fr',
+              }}
+            >
+              <ImageUploading
+                multiple
+                value={images}
+                onChange={onChange}
+                maxNumber={maxNumber}
+                dataURLKey="data_url"
+                acceptType={["jpg", "png", "jpeg"]}
+              >
+                {({
+                  imageList,
+                  onImageUpload,
+                  onImageRemoveAll,
+                  onImageUpdate,
+                  onImageRemove,
+                  isDragging,
+                  dragProps,
+                }) => (
+                  // write your building UI
+                  <Fragment>
+                    {/* //& Click - Drag/Drop Button */}
+                    <Box
+                      sx={{
+                        mb: 2,
+                        borderRadius: '10px',
+                        display: 'flex-column',
                       }}
                     >
-                      <MoreVertIcon sx={{ color: 'darkmagenta' }} />
-                    </Controls.ActionButton>
-                  }
-                </Box>
-                {/* <Box sx={{ size: "sm" }}>
-                </Box> */}
-              </CardContent>
-            </CardOverflow>
-          </Card>
-        ))
-      )}
+                      <Button
+                        onClick={onImageUpload}
+                        size="xl"
+                        startDecorator={<ImageTwoToneIcon />}
+                        sx={{
+                          backgroundColor: 'neutral.500',
+                          // bgcolor: 'background.componentBg',
+                          width: '100%',
+                          height: '100%',
+                        }}
+                        style={isDragging ? { backgroundColor: "blue" } : undefined}
+                        {...dragProps}
+                      >Click or Drag/Drop here
+                      </Button>
+                    </Box>
+                    {/* //& Image List to Add to database */}
+                    <Box
+                      sx={{
+                        borderRadius: '10px',
+                        display: 'flex-column',
+                        bgcolor: 'background.componentBg',
+                        maxHeight: 'calc(100vh - 410px)',
+                      }}>
+                      {/* //^ Buttons Box */}
+                      <Box
+                        sx={{ m: 2 }}
+                        display="flex"
+                        flexDirection="row"
+                        justifyContent="space-around"
+                      >
+
+                        <Button
+                          onClick={() => handleImageAddAll(imageList, onImageRemoveAll)}
+                          startDecorator={<KeyboardDoubleArrowLeftIcon />}
+                          disabled={imageList.length <= 0}
+                        >Add All </Button>
+                        <Button
+                          startDecorator={<DeleteIcon />}
+                          onClick={onImageRemoveAll}
+                          disabled={imageList.length <= 0}
+                        >Remove All </Button>
+                      </Box>
+                      <Sheet
+                        sx={{
+                          width: '100%',
+                          height: '87%',
+                          maxHeight: '100%',
+                          bgcolor: 'background.componentBg',
+                          overflowY: 'auto',
+                          borderRadius: '10px',
+
+                        }}
+                      >
+                        {/* //^ Image List */}
+                        <Box
+                          sx={{
+                            m: 2,
+                            height: '80%',
+                          }}
+                          display="grid"
+                          gridTemplateColumns='1fr 1fr'
+                        >
+                          {imageList.map((image, index) => (
+                            <Card key={index}
+                              sx={{
+                                m: 1,
+                                flexGrow: 1,
+                                minWidth: '100px',
+                                minHeight: '150px',
+                                maxHeight: '150px',
+                                backgroundColor: 'grey.300',
+                              }} >
+
+
+                              <CardCover
+                                onClick={(e) => (handleClickEvent(e, index, onImageUpdate, onImageRemove))}
+                                sx={{ cursor: 'pointer' }}
+                              >
+
+                                <img src={image.data_url} alt="" style={{ borderRadius: '10px' }} />
+                              </CardCover>
+
+
+                            </Card>
+                          ))}
+
+                        </Box>
+                      </Sheet>
+
+
+
+                    </Box>
+                  </Fragment>
+                )}
+              </ImageUploading>
+            </Box>
+          </Box>
+        </Sheet>
+      </Box>
 
       {/* //* Dialogs, Modals, Menus & Popups */}
       <Notification notify={notify} setNotify={setNotify} />
-      <PageDialog openPopup={openPopup} setOpenPopup={setOpenPopup} title={"Image Details"} titleColor={"purple"} pageWidth={'md'} >
+      <PageDialog openPopup={openPopup} setOpenPopup={setOpenPopup} title={"Image Details"} titleColor={"purple"} pageWidth={'sm'} >
         <PageForm recordForEdit={recordForEdit} addOrEdit={addOrEdit} />
       </PageDialog>
       <Controls.ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
-
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
@@ -281,21 +481,6 @@ export default function ImageLibraryTable() {
         aria-labelledby="basic-menu-button"
         placement="bottom-end"
       >
-        {/* //& Delete Item */}
-        <MenuItem
-          onClick={() => handleDelete(currentItem.id)}
-          variant="plain"
-          color="neutral"
-          aria-label="delete image"
-          size="sm"
-        >
-          <ListItemDecorator>
-            <DeleteIcon style={{ color: "red" }} />
-          </ListItemDecorator>
-          <Typography level="body2">
-            Delete
-          </Typography>
-        </MenuItem>
         {/* //& Edit Item */}
         <MenuItem
           onClick={() => handleEdit(currentItem)}
@@ -311,6 +496,22 @@ export default function ImageLibraryTable() {
             Edit
           </Typography>
         </MenuItem>
+        {/* //& Delete Item */}
+        <MenuItem
+          onClick={() => handleDelete(currentItem.id)}
+          variant="plain"
+          color="neutral"
+          aria-label="delete image"
+          size="sm"
+        >
+          <ListItemDecorator>
+            <DeleteIcon style={{ color: "red" }} />
+          </ListItemDecorator>
+          <Typography level="body2">
+            Delete
+          </Typography>
+        </MenuItem>
+
       </Menu>
 
     </Box>

@@ -1,3 +1,6 @@
+
+
+// #region [General Imports]
 import React, { useState } from 'react'
 // * Redux
 import { useSelector, useDispatch } from 'react-redux';
@@ -34,16 +37,21 @@ import BackgroundImageLight from "../assets/images/hole-std-bckgrd-light.jpg";
 // * Helper functions
 import { stringAvatar } from '../helpers/avatarFn';
 import theme from '../theme';
+// #endregion
 
-
+// #region [Customizable imports]
 import ProjectCards from '../pages/projectCards/ProjectCardTable';
 import TestComponent from '../pages/testComponent/TestComponent';
 import ImageLibraryTable from '../pages/imageLibrary/ImageLibraryTable';
+import ImageLibraryTableV1 from '../pages/imageLibrary/ImageLibraryTableV1';
 import SignInSide from '../pages/signIn/SignInSide';
 import RegistrationSide from '../pages/signIn/RegistrationSide';
+// #endregion
+
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
+// #region [Styled Components]
 const BackgroundPaper = styled('div')(({ theme }) => ({
   backgroundRepeat: "no-repeat",
   backgroundPosition: "center center",
@@ -55,24 +63,27 @@ const BackgroundPaper = styled('div')(({ theme }) => ({
     ? `url(${BackgroundImage})`
     : `url(${BackgroundImageLight})`,
 }));
+// #endregion
 
 function App() {
+  // #region //* [Local State]
   const dispatch = useDispatch();
   dispatch(updateComponentTitle("Dashboard"));
-  const componentTitle = useSelector((state) => state.appHeader.componentTitle);
+  //  const componentTitle = useSelector((state) => state.appHeader.componentTitle);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [sidePaneDisplay, setSidePaneDisplay] = useState(false);
-  // const [open, setOpen] = useState(false);
+  // #endregion
 
+  // #region //* [Event Handlers]
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
-
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  // #endregion
 
   return (
     <CssVarsProvider disableTransitionOnChange theme={filesTheme}>
@@ -178,7 +189,7 @@ function App() {
                     </MenuItem>
                   ))}
                 </Menu>
-                
+
               </Box>
             </Box>
           </Layout.Header>
@@ -202,9 +213,10 @@ function App() {
                 {/* <Route path="/" element={<Dashboard />} /> */}
                 <Route path="/projects" element={<ProjectCards />} />
                 <Route path="/imageLibrary" element={<ImageLibraryTable />} />
+                <Route path="/imageLibraryV1" element={<ImageLibraryTableV1 />} />
                 <Route path="/testComponent" element={<TestComponent />} />
                 <Route path="/registration" element={<RegistrationSide />} />
-                <Route path="/login" element={<SignInSide/>} />
+                <Route path="/login" element={<SignInSide />} />
                 {/* <Route path="*" element={<Navigate to="/projects" />} /> */}
               </Routes>
 
