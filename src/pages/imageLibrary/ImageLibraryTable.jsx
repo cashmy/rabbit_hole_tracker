@@ -35,6 +35,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import TitleBar from '../../components/titleBar';
 import NoImage from '../../assets/images/no_image.png';
 import Notification from '../../components/controls/Notification';
+import Controls from '../../components/controls/Controls';
 // #endregion
 
 // #region [Customizable imports]
@@ -51,7 +52,6 @@ import {
   useAddImageMutation,
   useUpdateImageMutation,
 } from '../../features/imageLibrarySlice';
-import Controls from '../../components/controls/Controls';
 // #endregion
 
 
@@ -109,7 +109,6 @@ export default function ImageLibraryTable() {
       id: obj.id,
       formData
     }
-    console.log('body.formData: ', [...body.formData]);
     return body;
   };
 
@@ -143,7 +142,6 @@ export default function ImageLibraryTable() {
     setRecordForEdit(null);
   }
   const handleDelete = (id) => {
-    console.log("Deleting item: ", id);
     setConfirmDialog({
       isOpen: true,
       title:

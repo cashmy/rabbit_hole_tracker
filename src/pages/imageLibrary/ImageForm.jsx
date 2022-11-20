@@ -58,7 +58,6 @@ const PageForm = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (validate())
-      console.log("handleSubmit: ", values);
     addOrEdit(values, resetForm);
   };
   const handleReset = () => {
@@ -68,8 +67,6 @@ const PageForm = (props) => {
   }
   const handleImageChange = (event) => {
     setFileObject(URL.createObjectURL(event.target.files[0]))
-    console.log("Event data: ", event.target.files[0])
-    console.log("File Object: ", fileObject)
     setValues({
       ...values,
       mime_type: event.target.files[0].type,
@@ -97,7 +94,6 @@ const PageForm = (props) => {
   // Add or Edit mode actions
   useEffect(() => {
     if (recordForEdit != null) {
-      console.log("Record for edit: ", recordForEdit)
       setFileObject(tempServer + recordForEdit.file_name)
       setAddMode(false)
       setValues({

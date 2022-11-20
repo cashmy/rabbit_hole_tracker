@@ -39,7 +39,7 @@ export const apiImageLibrarySlice = createApi({
                 query: (body) => ({
                     url: "/",
                     method: "POST",
-                    body: body.formData,
+                    body,
                     dataType: "jsonp",
                 }),
                 invalidatesTags: ["Images"],
