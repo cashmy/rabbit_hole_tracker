@@ -3,12 +3,13 @@
  * @github [https://github.com/cashmy]
  * @create date 2022-11-11 22:22:03
  * @modify date 2022-11-11 22:22:03
- * @desc Template for a table like page.
+ * @desc Project "Card" Table
  */
 
 // #region [General Imports]
 import React from 'react'
 import { useState } from 'react';
+import { useNavigate, useLocation } from "react-router-dom";
 import { format } from 'date-fns';
 
 // * Joy UI
@@ -60,8 +61,8 @@ import {
 
 
 export default function ProjectCards() {
-
   // #region //* [Local State]
+  const navigate = useNavigate();
   const [archiveStatus, setArchiveStatus] = React.useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [openPopup, setOpenPopup] = useState(false)
@@ -163,6 +164,9 @@ export default function ProjectCards() {
     setAnchorEl(null);
     setCurrentItem(null);
   };
+  const handleDetails = (projectId) => {
+    navigate("/rabbitHole", { state: projectId });
+  }
   // #endregion
 
   return (
@@ -270,11 +274,9 @@ export default function ProjectCards() {
 
                 {/* //& Assign Details */}
                 <Controls.ActionButton
-                  tooltipText="Assign Details (disabled)"
+                  tooltipText="Assign Details"
                   aria-label={`Work with ${item.name}`}
-                  // onClick={() => {
-                  //   handleArchiveItem(item);
-                  // }}
+                  onClick={() => handleDetails(item.id)}                  
                 >
                   <AssignmentIcon sx={{ color: 'darkorange' }} />
                 </Controls.ActionButton>

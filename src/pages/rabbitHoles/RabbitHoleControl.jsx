@@ -11,6 +11,7 @@
 
 // #region [General Imports]
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 // * Joy UI
 import {
@@ -22,6 +23,7 @@ import {
   ListItemDecorator,
   Menu,
   MenuItem,
+  Sheet,
   Typography
 } from '@mui/joy'
 import { maxWidth } from '@mui/system';
@@ -38,27 +40,30 @@ import PrintIcon from '@mui/icons-material/Print';
 // * Components
 import Controls from '../../components/controls/Controls';
 import TitleBar from '../../components/titleBar';
-import NoImage from '../../assets/images/no_image.png';
 import Notification from '../../components/controls/Notification';
 // #endregion
 
 // #region [Customizable imports]
-// import PageForm from "./RabbitHoleForm";
+import PageForm from "./RabbitHoleForm";
 import PageDialog from '../page_dialog';
+import RabbitHoleTable from "./RabbitHoleTable";
 // #endregion
 
 // *** RTK/Service Layer(s) ***
 // #region [RTK Customizable Services]
 import {
-  useDeleteProjectMutation,
-  useFetchAllProjectsByArchiveStsQuery,
-  useAddProjectMutation,
-  useUpdateProjectMutation,
-} from '../../features/projectSlice';
+  useDeleteRabbitHoleMutation,
+  useFetchAllRabbitHolesQuery,
+  useAddRabbitHoleMutation,
+  useChangeRabbitHoleStatusMutation,
+  useUpdateRabbitHoleMutation,
+} from '../../features/rabbitHoleSlice';
 // #endregion
 
 export default function RabbitHoleControl() {
   // #region //* [Local State]
+  const [projectId, setProjectId] = useState(1);
+  const location = useLocation();
   const [displayGrid, setDisplayGrid] = React.useState(false);
   const [openPopup, setOpenPopup] = useState(false)
   const [recordForEdit, setRecordForEdit] = useState(null);
@@ -70,11 +75,17 @@ export default function RabbitHoleControl() {
   // #endregion
 
   // #region // * [RTK Data requests]
-  const { data = [], loading } = useFetchAllProjectsByArchiveStsQuery(archiveStatus);
-  const [deleteRabbitHole] = useDeleteProjectMutation();
-  const [addRabbitHole] = useAddProjectMutation();
-  const [updateRabbitHole] = useUpdateProjectMutation();
+  const { data = [], loading } = useFetchAllRabbitHolesQuery(projectId);
+  const [deleteRabbitHole] = useDeleteRabbitHoleMutation();
+  const [addRabbitHole] = useAddRabbitHoleMutation();
+  const [chgRabbitHole] = useChangeRabbitHoleStatusMutation();
+  const [updateRabbitHole] = useUpdateRabbitHoleMutation();
   // #endregion
+
+  useEffect(() => { }, [location]);
+  if (location.state !== null && location.state.id !== undefined) {
+    setProjectId(location.state.projectId);
+  }
 
   // #region //* [Event Handlers]
   const addOrEdit = (record, resetForm) => {
@@ -127,15 +138,19 @@ export default function RabbitHoleControl() {
     });
   };
   const handleEdit = (record) => {
-    console.log("Record: ", record);
-    const newRecord = { ...record };
-    newRecord.file = record.image.file_name
-
-    setRecordForEdit(newRecord);
+    setRecordForEdit(record);
     setOpenPopup(true)
   };
   const handleDisplay = () => {
-    setDisplayToggle(!displayToggle);
+    setDisplayGrid(!displayGrid);
+  }
+  const handleStatusChange = (id, field, newSts) => {
+    console.log("Changing status of " + field + " to " + newSts);
+    if (field === 'solution') {
+      chgRabbitHole({ id, solution: newSts })
+    } else {
+      chgRabbitHole({ id, completed: newSts })
+    }
   }
   // #endregion
 
@@ -154,20 +169,33 @@ export default function RabbitHoleControl() {
         addFab={true}
         returnFab={true}
         toggleFab={true}
+        toggleStatus={displayGrid}
         // searchBar={true}
         handleAdd={handleAdd}
         handleDisplay={handleDisplay}
       />
 
+      <Box
+      >
+        <Sheet
+        sx={{borderRadius: '10px'}}
+        >
       {/* //* Handle Display here */}
       <Typography level="body" sx={{ textAlign: 'center' }}>
         {displayGrid
           ? "Grid"
-          // ? <RabbitHoleGrid handleEdit={handleEdit} handleDelete={handleDelete} />
-          : "Table"
-          // : <RabbitHoleTable handleEdit={handleEdit} handleDelete={handleDelete} />
+          // ? <RabbitHoleGrid projectId={projectId} handleEdit={handleEdit} handleDelete={handleDelete} />
+          // : "Table"
+          : <RabbitHoleTable 
+              projectId={projectId} 
+              handleEdit={handleEdit} 
+              handleDelete={handleDelete} 
+              handleStatusChange={handleStatusChange} />
         }
       </Typography>
+
+        </Sheet>
+      </Box>
 
 
 

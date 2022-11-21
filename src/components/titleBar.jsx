@@ -25,7 +25,9 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import Inventory2TwoToneIcon from '@mui/icons-material/Inventory2TwoTone';
 import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';
-import { AccountTree } from '@mui/icons-material';
+import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
+import FormatListNumberedRoundedIcon from '@mui/icons-material/FormatListNumberedRounded';
+
 //#endregion
 
 export default function TitleBar(props) {
@@ -46,6 +48,11 @@ export default function TitleBar(props) {
     archiveStatus = false,
     handleArchive,
     archiveColor,
+
+    toggleFab,
+    toggleStatus = false,
+    handleDisplay,
+    toggleColor,
 
     searchBar,
   } = props
@@ -129,6 +136,23 @@ export default function TitleBar(props) {
       )}
 
       <Typography /> {/* //& Spacer */}
+
+      {/* //& Optional Toggle Button */}
+      {toggleFab && (
+        <Tooltip title={"Switch to " + (!toggleStatus ? "Grid" : "List") + " view"} >
+          <Button
+            sx={{ m: 1.5, }}
+            variant="outlined"
+            color={toggleColor || "primary"}
+            aria-label="switch display view"
+            size="sm"
+            onClick={handleDisplay}
+          >
+            {!toggleStatus ? <GridViewRoundedIcon /> : <FormatListNumberedRoundedIcon />}
+            {/* <Inventory2TwoToneIcon /> */}
+          </Button>
+        </Tooltip>
+      )}
 
       {/* //& Optional Arkcive Button */}
       {archiveFab && (

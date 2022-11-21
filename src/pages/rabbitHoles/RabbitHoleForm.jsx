@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Grid, useTheme } from '@mui/material';
-import Controls from "../components/controls/Controls";
-import { useForm, Form } from '../hooks/useForm';
+import Controls from "../../components/controls/Controls";
+import { useForm, Form } from '../../hooks/useForm';
 
 const initialFValues = {
   id: 0,

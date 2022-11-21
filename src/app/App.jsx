@@ -46,6 +46,7 @@ import ImageLibraryTable from '../pages/imageLibrary/ImageLibraryTable';
 import ImageLibraryTableV1 from '../pages/imageLibrary/ImageLibraryTableV1';
 import SignInSide from '../pages/signIn/SignInSide';
 import RegistrationSide from '../pages/signIn/RegistrationSide';
+import RabbitHoleControl from '../pages/rabbitHoles/RabbitHoleControl';
 // #endregion
 
 
@@ -217,6 +218,7 @@ function App() {
                 <Route path="/testComponent" element={<TestComponent />} />
                 <Route path="/registration" element={<RegistrationSide />} />
                 <Route path="/login" element={<SignInSide />} />
+                <Route path="/rabbitHole" element={<RabbitHoleControl />} />
                 {/* <Route path="*" element={<Navigate to="/projects" />} /> */}
               </Routes>
 
