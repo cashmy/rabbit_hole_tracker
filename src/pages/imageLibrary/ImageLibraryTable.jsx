@@ -58,8 +58,9 @@ import {
 // #endregion
 
 
-export default function ImageLibraryTable() {
+export default function ImageLibraryTable(props) {
   // #region //* [Local State]
+  const {selectImage} = props;
   const [images, setImages] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [openPopup, setOpenPopup] = useState(false)
@@ -108,7 +109,6 @@ export default function ImageLibraryTable() {
     }
     return body;
   };
-
   const handleImageAddAll = (imageList, onImageRemoveAll) => {
     let imageURL = {}
   
@@ -125,7 +125,6 @@ export default function ImageLibraryTable() {
     })
     onImageRemoveAll()
   }
-
   const addOrEdit = (record, resetForm) => {
     let close = false
 
@@ -186,6 +185,10 @@ export default function ImageLibraryTable() {
     setAnchorEl(null);
     setCurrentItem(null);
   };
+  const handleSelection = (item) => {
+    selectImage(item)
+    // exit modal close.
+  }
   // #endregion
 
 
@@ -201,7 +204,7 @@ export default function ImageLibraryTable() {
       <TitleBar
         componentTitle="Image Library"
         avatarIcon="icon"
-        avatarImage={<BiotechIcon />}
+        avatarImage={<ImageTwoToneIcon />}
       />
 
       {/* //* Component Pannel */}
@@ -273,7 +276,7 @@ export default function ImageLibraryTable() {
                         <AspectRatio ratio="4/3" color="primary">
                           <CardCover
                             sx={{ cursor: 'pointer' }}
-                            onClick={() => { alert('Selected for use. Image Id: ' + item.id) }}
+                            onClick={() => handleSelection(item) }
                           >
                             <img
                               alt={item.image != "" && item.image != null ? item.image.alt_text : item.name}

@@ -9,21 +9,14 @@ import {
   CssBaseline,
   Link,
   TextField,
+  Typography
 } from '@mui/joy'
 
-// import Avatar from "@mui/material/Avatar";
-// import Box from '@mui/material/Box';
-// import Button from "@mui/material/Button";
-// import CssBaseline from "@mui/material/CssBaseline";
-// import TextField from "@mui/material/TextField";
-// import Link from "@mui/material/Link";
-import FormControlLabel from "@mui/material/FormControlLabel";
-// import Checkbox from "@mui/material/Checkbox";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+// import Typography from "@mui/material/Typography";
 
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
 import Image from "../../assets/images/hole-std-bckgrd.jpg";
 
 
@@ -112,7 +105,10 @@ export default function SignInSide() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ 
+            mt: 1, 
+            width: '25vw' 
+            }}>
             <TextField
               variant="solid"
               margin="normal"
@@ -160,14 +156,14 @@ export default function SignInSide() {
             <Grid container>
               <Grid item xs>
                 <Link href="#">
-                  <Typography variant="body2" color="secondary">
+                  <Typography level="body2" color="secondary">
                     Forgot password?
                   </Typography>
                 </Link>
               </Grid>
               <Grid item>
                 <Link component={RouterLink} to={"/registration"}>
-                  <Typography variant="body2" color="secondary">
+                  <Typography level="body2" color="secondary">
                     Don't have an account? Sign Up
                   </Typography>
                 </Link>

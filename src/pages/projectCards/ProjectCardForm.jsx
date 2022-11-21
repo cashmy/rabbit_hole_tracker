@@ -1,15 +1,23 @@
 // TODO: Replace defaulted user with login user
 // TODO: Replace "tempServer" with a variable that can be set in the .env file
 
-import React, { useEffect } from "react";
-import { Grid, Input } from '@mui/material';
-import Controls from "../../components/controls/Controls";
+// #region [General Imports]
+import React, { useState, useEffect } from "react";
 import { useForm, Form } from '../../hooks/useForm';
+import { Grid } from '@mui/material';
+import { Typography } from '@mui/joy';
+import Controls from "../../components/controls/Controls";
 import theme from '../../theme';
 import Image from 'mui-image'
-// import { AspectRatio } from "@mui/joy";
+// #endregion
+
+// #region [Customizable imports]
+import PageDialog from '../page_dialog';
+import ImageLibraryTable from '../imageLibrary/ImageLibraryTable';
+// #endregion
 
 const tempServer = "http://localhost:8000";
+const noImage = "http://localhost:8000/media/No_Image.png";
 
 const initialFValues = {
   id: 0,
@@ -19,19 +27,21 @@ const initialFValues = {
   text_color: '#000000',
   theme_color: '#00a2ed',
   user_id: 2,
-  image_id: '1',
+  image_id: 1,
   archived: false,
   image: {
     file_name: "",
     alt_text: "",
     mime_type: "",
+    file_size: 0,
   },
 }
 
 // * Main component
 const PageForm = (props) => {
   const { addOrEdit, recordForEdit } = props;
-  const [fileObject, setFileObject] = React.useState("http://localhost:8000/media/No_Image.png");
+  const [fileObject, setFileObject] = React.useState(noImage);
+  const [openPopup, setOpenPopup] = useState(false)
 
   // Validation function (to be passed as a callback)
   const validate = (fieldValues = values) => {
@@ -40,6 +50,10 @@ const PageForm = (props) => {
       temp.name = fieldValues.name
         ? ""
         : "This field is required."
+    if ('abbreviation' in fieldValues)
+        temp.abbreviation = fieldValues.abbreviation
+          ? ""
+          : "This field is required."
     if ('description' in fieldValues)
       temp.description = fieldValues.description
         ? ""
@@ -59,20 +73,40 @@ const PageForm = (props) => {
     handleInputChange,
     resetForm,
   } = useForm(initialFValues);
+
+  // #region //* [Event Handlers]
   // SaveSubmit Callback handler - event driven
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log("Values: ", values);
     if (validate())
       addOrEdit(values, resetForm);
+      setFileObject(noImage);
   };
   const handleReset = () => {
     if (recordForEdit == null)
       resetForm()
     else setValues({ ...recordForEdit })
   }
-  const handleImageChange = (event) => {
-    setFileObject(URL.createObjectURL(event.target.files[0]))
+  const selectImage = (imageRecord) => {
+    setOpenPopup(false)
+    setFileObject(tempServer + imageRecord.file_name);
+    // setValues({})
+    setValues({
+      ...values,
+      image_id: imageRecord.id,
+      user_id: 2,
+      image: {
+        id: imageRecord.id,
+        file_name: imageRecord.file_name,
+        alt_text: imageRecord.alt_text,
+        mime_type: imageRecord.mime_type,
+        file_size: imageRecord.file_size,
+      }
+    });
   }
+  // #endregion
+
 
   useEffect(() => {
     if (recordForEdit != null) {
@@ -91,6 +125,7 @@ const PageForm = (props) => {
     <React.Fragment>
       <Form>
         <Grid container spacing={2} >
+          {/* //& Fields */}
           <Grid container spacing={2} item xs={6}>
             <Grid item xs={12}>
               <Controls.Input
@@ -101,6 +136,17 @@ const PageForm = (props) => {
                 onChange={handleInputChange}
                 error={errors.name}
                 placeholder="Enter a name for the project"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Controls.Input
+                name="abbreviation"
+                label="Abbreviation"
+                value={values.abbreviation}
+                color="primary"
+                onChange={handleInputChange}
+                error={errors.abbreviation}
+                placeholder="Enter an 3+ character abbreviation project"
               />
             </Grid>
             <Grid item xs={12}>
@@ -117,16 +163,9 @@ const PageForm = (props) => {
             </Grid>
           </Grid>
 
-          <Grid container spacing={2} item xs={6}>
-            {/* //& File Input name */}
+            {/* //& Image Selection & Display */}
+          <Grid container spacing={2} item xs={6} sx={{display: 'flex', justifyContent: 'center'}} >
             {/* This field is intentionally uncontrolled */}
-            <Grid item xs={12}>
-              <input
-                type="file"
-                name="image"
-                onChange={handleImageChange}
-              />
-            </Grid>
             <Grid item xs={12}>
               <Image
                 src={fileObject || ""}
@@ -138,10 +177,17 @@ const PageForm = (props) => {
                 bgColor="inherit"
               />
             </Grid>
+            <Grid item xs={12} sx={{display: 'flex', justifyContent: 'center'}} >
+              <Controls.Button
+                onClick={() => setOpenPopup(true)}
+                text={fileObject == noImage ? "Select Image" : "Change Image"}
+                color={fileObject == noImage ? 'primary' : 'secondary'}
+              />
+            </Grid>
           </Grid>
         </Grid>
 
-        <Grid item xs={12} sx={{ display: "flex", marginTop: theme.spacing(2) }} >
+        <Grid item xs={12} sx={{ display: "flex", marginTop: theme.spacing(2), alignItems: 'center' }} >
           <Controls.Button
             color="primary"
             type="submit"
@@ -155,6 +201,11 @@ const PageForm = (props) => {
           />
         </Grid>
       </Form>
+
+      {/* Nested Modal ?? */}
+      <PageDialog openPopup={openPopup} setOpenPopup={setOpenPopup} title={"Image Selections"} titleColor={"green"} pageWidth={'xl'} >
+        <ImageLibraryTable selectImage={selectImage} />
+      </PageDialog>
     </React.Fragment>
 
   )

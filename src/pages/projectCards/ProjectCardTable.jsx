@@ -7,6 +7,7 @@
  */
 
 // #region [General Imports]
+import React from 'react'
 import { useState } from 'react';
 import { format } from 'date-fns';
 
@@ -22,7 +23,6 @@ import {
   MenuItem,
   Typography
 } from '@mui/joy'
-import React from 'react'
 
 // * Mui Icons
 import ArchiveIcon from "@mui/icons-material/Archive";
@@ -35,6 +35,7 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import PrintIcon from '@mui/icons-material/Print';
 
 // * Components
+import Controls from '../../components/controls/Controls';
 import TitleBar from '../../components/titleBar';
 import NoImage from '../../assets/images/no_image.png';
 import Notification from '../../components/controls/Notification';
@@ -55,10 +56,6 @@ import {
   useAddProjectMutation,
   useUpdateProjectMutation,
 } from '../../features/projectSlice';
-import { maxWidth } from '@mui/system';
-import Controls from '../../components/controls/Controls';
-
-
 // #endregion
 
 
@@ -151,6 +148,7 @@ export default function ProjectCards() {
     });
   };
   const handleEdit = (record) => {
+    console.log("Record: ", record);
     const newRecord = { ...record };
     newRecord.file = record.image.file_name
 
@@ -214,12 +212,6 @@ export default function ProjectCards() {
                     : NoImage}
                 />
               </CardCover>
-              {/* <CardCover
-                sx={{
-                  background:
-                    'linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.12))',
-                }}
-              /> */}
             </AspectRatio>
             {/* //& Card Data & Actions*/}
             <CardContent
