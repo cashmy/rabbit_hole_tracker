@@ -76,7 +76,7 @@ const columnCells = [
 // ^ MAIN COMPONENT
 export default function RabbitHoleTable(props) {
   // #region //* [Local State]
-  const { projectId = 1, handleEdit, handleDelete, handleStatusChange } = props;
+  const { projectId, handleEdit, handleDelete, handleStatusChange } = props;
   const [filterFn, setFilterFn] = useState({ fn: items => { return items; } });
   const [notify, setNotify] = useState({ isOpen: false, message: '', type: 'info' })
   // #endregion
@@ -92,40 +92,6 @@ export default function RabbitHoleTable(props) {
     recordsAfterPagingAndSorting
   } = useTable(data, columnCells, filterFn,);
 
-  // #region // * [Event Handlers]
-  const handleComplete = (record) => {
-    handleStatusChange(record.id, "completed", !record.solution)
-    setNotify({
-      isOpen: true,
-      message: "Completion status changed",
-      type: "success",
-    });
-  };
-  const handleSearch = e => {
-    let target = e.target;
-    // state can't store functions, so we are storing an object with the function internally defined.
-    setFilterFn({
-      fn: items => {
-        // target.value is the search box contents
-        if (target.value === "")
-          return items;
-        else
-          return items.filter(
-            (x) =>
-              x.log_type
-                .toLowerCase()
-                .includes(target.value.toLowerCase()) ||
-              x.name
-                .toLowerCase()
-                .includes(target.value.toLowerCase()) ||
-              x.description
-                .toLowerCase()
-                .includes(target.value.toLowerCase())
-          )
-      }
-    })
-  };
-  // #endregion
 
   return (
     <Box sx={{ display: flexbox, m: 1, }}>
@@ -154,7 +120,7 @@ export default function RabbitHoleTable(props) {
                         ?  "warning" 
                         : record.log_type ==="t"
                           ? "success" 
-                          : "secondary"}
+                          : "neutral"}
                     >
                       
                       {record.log_type === "i" 
@@ -163,7 +129,7 @@ export default function RabbitHoleTable(props) {
                         ?  "distraction" 
                         : record.log_type ==="t"
                           ? "task" 
-                          : "unknown"}
+                          : "unclassified"}
                     </Chip>
                   </TableCell>
                   <TableCell>{record.name}</TableCell>
@@ -200,7 +166,6 @@ export default function RabbitHoleTable(props) {
 
                     {/* //& Done */}
                     <Controls.ActionButton
-                      color="darkorange"
                       tooltipText={doneToolTip}
                       size="md"
                       onClick={() => handleStatusChange(record.id, "completed", !record.completed)}

@@ -23,7 +23,7 @@ export const apiImageLibrarySlice = createApi({
                 query() {
                     return `/`;
                 },
-                providesTags: ["Projects"],
+                providesTags: ["Images"],
             }),
 
             // Get All Images (Admin)

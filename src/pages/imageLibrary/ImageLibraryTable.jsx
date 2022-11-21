@@ -8,7 +8,7 @@
  */
 
 // #region [General Imports]
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 
 // * Joy UI
 import {
@@ -191,7 +191,11 @@ export default function ImageLibraryTable(props) {
   }
   // #endregion
 
-
+  useEffect(() => {
+    if (data) {
+      console.log("Data", data)
+    }
+  }, [data]);
   return (
     <Box
       sx={{

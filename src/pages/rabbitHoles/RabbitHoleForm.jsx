@@ -1,18 +1,26 @@
 import React, { useEffect } from "react";
+import { Select, Option } from '@mui/joy'
 import { Grid, useTheme } from '@mui/material';
 import Controls from "../../components/controls/Controls";
 import { useForm, Form } from '../../hooks/useForm';
 
 const initialFValues = {
   id: 0,
+  project: '1',
   name: '',
-  address: '',
+  description: '',
+  log_type: '',
+  rating: 0,
+  solution: false,
+  completed: false,
+  archived: false,
 }
 
 // * Main component
 const PageForm = (props) => {
   const theme = useTheme();
   const { addOrEdit, recordForEdit } = props;
+  const action = React.useRef(null);
 
   // Validation function (to be passed as a callback)
   const validate = (fieldValues = values) => {
@@ -21,10 +29,14 @@ const PageForm = (props) => {
       temp.name = fieldValues.name
         ? ""
         : "This field is required."
-    if ('address' in fieldValues)
-      temp.address = fieldValues.address
+    if ('description' in fieldValues)
+      temp.description = fieldValues.description
         ? ""
         : "This field is required."
+    if ('log_type' in fieldValues)
+        temp.log_type = fieldValues.log_type
+          ? ""
+          : "This field is required."
     setErrors({
       ...temp
     })
@@ -47,12 +59,22 @@ const PageForm = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (validate())
+    console.log("values: ", values);
       addOrEdit(values, resetForm);
   };
   const handleReset = () => {
     if (recordForEdit == null)
       resetForm()
     else setValues({ ...recordForEdit })
+  }
+  const handleSelectChange = (e, newValue) => {
+    console.log("onSelectChange: ", e, newValue);
+    setValues(
+      {
+        ...values,
+        log_type: newValue
+      }
+    )
   }
   useEffect(() => {
     if (recordForEdit != null)
@@ -75,14 +97,73 @@ const PageForm = (props) => {
               error={errors.name}
             />
           </Grid>
-          <Grid item xs={12}>
-            <Controls.Input
-              name="address"
-              label="Address"
-              value={values.address}
+          <Grid item xs={12} sx={{ display: "flex", flexDirection: "column"}}>
+            <Controls.TextareaAuto
+              minRows={3}
+              maxRows={5}
+              style={{ flexGrow: 1 }}
+              aria-label="description"
+              placeholder="Description"
+              name="description"
+              label="Description"
+              value={values.description}
               onChange={handleInputChange}
-              error={errors.address}
+              error={errors.description}
             />
+          </Grid>
+
+          <Grid item xs={12}
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: 'flex-end',
+              justifyContent: 'space-between'
+            }}>
+
+            <Grid item xs={3} >
+              <Controls.Input
+                name="rating"
+                label="Rating"
+                value={values.rating}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid item xs={3} >
+              <Controls.Select
+                variant="soft"
+                name="log_type"
+                label="Log Type"
+                value={values.log_type}
+                error={errors.log_type}
+                onChange={handleSelectChange}
+                placeholder="Choose one..."
+                options={[
+                  { id: 'i', title: 'Impediment' },
+                  { id: 'd', title: 'Distraction' },
+                  { id: 't', title: 'Task' },
+                  { id: 'u', title: 'Unclassified' },
+                ]}
+              />
+
+            </Grid>
+            <Grid item xs={2} >
+              <Controls.Checkbox
+                size="sm"
+                name="solution"
+                label="Solution"
+                color="success"
+                value={values.solution}
+                onChange={handleToggleChange}
+              />
+            </Grid>
+            <Grid item xs={2} >
+              <Controls.Checkbox
+                name="completed"
+                label="Completed"
+                value={values.completed}
+                onChange={handleToggleChange}
+              />
+            </Grid>
           </Grid>
 
           <Grid item xs={12} sx={{ display: "flex", marginTop: theme.spacing(2) }} >

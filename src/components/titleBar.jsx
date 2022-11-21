@@ -28,6 +28,9 @@ import InventoryTwoToneIcon from '@mui/icons-material/InventoryTwoTone';
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import FormatListNumberedRoundedIcon from '@mui/icons-material/FormatListNumberedRounded';
 
+// * Helper functions
+import { stringAvatar } from '../helpers/avatarFn';
+
 //#endregion
 
 export default function TitleBar(props) {
@@ -91,8 +94,11 @@ export default function TitleBar(props) {
       {avatarIcon == "image" &&
         <IconButton size="xl" variant="plain" >
           <Avatar
+            alt="Remy Sharp"
             src={`${avatarImage}`}
-            alt="project avatar"
+            alt_text='project avatar'
+            size='lg'
+            {...stringAvatar('Rabbit Hole')}
           />
         </IconButton>
       }

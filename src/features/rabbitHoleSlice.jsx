@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const apiRabbitHoleSlice = createApi({
-    reducerPath: "apiImageLibrary",
+    reducerPath: "apiRabbitHoles",
     baseQuery: fetchBaseQuery({
         baseUrl: "http://localhost:8000/api/rabbit_holes",
         // prepareHeaders(headers) {
@@ -18,7 +18,7 @@ export const apiRabbitHoleSlice = createApi({
 
     endpoints: (builder) => {
         return {
-            // Get All Images by Project ID
+            // Get All Rabbit Holes by Project ID
             fetchAllRabbitHoles: builder.query({
                 query(body) {
                     return `/project/${body}/`;
@@ -26,7 +26,7 @@ export const apiRabbitHoleSlice = createApi({
                 providesTags: ["RabbitHoles"],
             }),
 
-            // Get All Images for a Project
+            // Get All Rabbit Holes for a Project
             fetchAllRabbitHolesAdmin: builder.query({
                 query(body) {
                     return `/`;
@@ -34,10 +34,10 @@ export const apiRabbitHoleSlice = createApi({
                 providesTags: ["RabbitHoles"],
             }),
 
-            // Add a Image
+            // Add a Rabbit Hole
             addRabbitHole: builder.mutation({
                 query: (body) => ({
-                    url: `/project/${body.projectId}/`,
+                    url: `/project/${body.project_id}/`,
                     method: "POST",
                     body,
                 }),
@@ -53,17 +53,17 @@ export const apiRabbitHoleSlice = createApi({
                 invalidatesTags: ["RabbitHoles"],
             }),
 
-            // Update A Image
+            // Update A Rabbit Hole
             updateRabbitHole: builder.mutation({
                 query: (body) => ({
                     url: `/${body.id}/`,
-                    method: "PATCH",
-                    body:body.formData,
+                    method: "PUT",
+                    body,
                 }),
                 invalidatesTags: ["RabbitHoles"],
             }),
 
-            // Delete a Image
+            // Delete a Rabbit Hole
             deleteRabbitHole: builder.mutation({
                 query: (id) => ({
                     url: `/${id}/`,

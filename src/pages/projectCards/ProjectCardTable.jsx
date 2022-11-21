@@ -164,8 +164,9 @@ export default function ProjectCards() {
     setAnchorEl(null);
     setCurrentItem(null);
   };
-  const handleDetails = (projectId) => {
-    navigate("/rabbitHole", { state: projectId });
+  const handleDetails = (item) => {
+    console.log("Item: ", item);
+    navigate("/rabbitHole", { state: {projectId: item.id, projectName: item.name, projectImage: item.image.file_name }});
   }
   // #endregion
 
@@ -276,7 +277,7 @@ export default function ProjectCards() {
                 <Controls.ActionButton
                   tooltipText="Assign Details"
                   aria-label={`Work with ${item.name}`}
-                  onClick={() => handleDetails(item.id)}                  
+                  onClick={() => handleDetails(item)}                  
                 >
                   <AssignmentIcon sx={{ color: 'darkorange' }} />
                 </Controls.ActionButton>

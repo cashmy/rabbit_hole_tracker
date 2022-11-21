@@ -63,15 +63,16 @@ import {
 export default function RabbitHoleControl() {
   // #region //* [Local State]
   const [projectId, setProjectId] = useState(1);
+  const [projectName, setProjectName] = useState('Unknown');
+  const [projectImageURL, setProjectImageURL] = useState('');
   const location = useLocation();
   const [displayGrid, setDisplayGrid] = React.useState(false);
   const [openPopup, setOpenPopup] = useState(false)
   const [recordForEdit, setRecordForEdit] = useState(null);
   const [notify, setNotify] = useState({ isOpen: false, message: '', type: 'info' })
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
-  // const [anchorEl, setAnchorEl] = useState(null);
-  // const [currentItem, setCurrentItem] = useState();
-  // const open = Boolean(anchorEl);
+  // TODO: Change for production
+  const tempBaseDir = 'http://localhost:8000/';
   // #endregion
 
   // #region // * [RTK Data requests]
@@ -82,13 +83,18 @@ export default function RabbitHoleControl() {
   const [updateRabbitHole] = useUpdateRabbitHoleMutation();
   // #endregion
 
-  useEffect(() => { }, [location]);
-  if (location.state !== null && location.state.id !== undefined) {
-    setProjectId(location.state.projectId);
-  }
+  useEffect(() => { 
+    console.log("Avatar URL: ", location.state);
+    if (location.state !== null && location.state.projectId !== undefined) {
+      setProjectId(location.state.projectId);
+      setProjectName(location.state.projectName);
+      setProjectImageURL(tempBaseDir + location.state.projectImage);
+    }
+  }, [location]);
 
   // #region //* [Event Handlers]
   const addOrEdit = (record, resetForm) => {
+    record = { ...record, project_id: projectId }
     let close = false
     if (record.id === 0) {
       addRabbitHole(record)
@@ -163,9 +169,10 @@ export default function RabbitHoleControl() {
     >
       {/* //* Page: Project Details (Rabbit Holes) Header */}
       <TitleBar
-        componentTitle="Project Details (Rabbit Holes)"
-        avatarIcon="icon"
-        avatarImage={<VerticalAlignBottomIcon />}
+        componentTitle={`Rabbit Holes for ${projectName}`}
+        avatarIcon="image"
+        avatarImage={projectImageURL}
+        // avatarImage={<VerticalAlignBottomIcon />}
         addFab={true}
         returnFab={true}
         toggleFab={true}

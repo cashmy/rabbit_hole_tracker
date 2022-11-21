@@ -1,27 +1,28 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import { Option, Select as JoySelect } from '@mui/joy'
 import FormControl from '@mui/joy/FormControl';
+import FormLabel from '@mui/joy/FormLabel';
 import FormHelperText from '@mui/joy/FormHelperText';
-import { InputLabel } from '@mui/material';
-
 
 const Select = (props) => {
-    const { name, label, value, error = null, onChange, options } = props
+    const { name, label, value, error = null, onChange, placeholder, size, variant, options } = props
 
     return (
         <FormControl variant='outlined' fullWidth
             {...(error && { error: true })}
         >
-            <InputLabel>{label || 'Select Label'}</InputLabel>
+            <FormLabel sx={{fontSize:'xs'}}> {label || 'Select Label'}</FormLabel>
             <JoySelect
-                variant="filled"
+                variant={variant || 'soft'}
+                size={size || 'sm'}
+                action={useRef(null)}
                 label={label || 'select label'}
                 name={name}
                 value={value || ''}
                 onChange={onChange}
-                fullWidth
+                placeholder={placeholder || 'Choose one...'}
             >
-                <MenuItem key='999' value="None">None</MenuItem>
+                {/* <MenuItem key='999' value="None">None</MenuItem> */}
                 {options &&
                     options.map(
                         item => (<Option key={item.id} value={item.id}>{item.title}</Option>)
