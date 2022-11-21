@@ -7,11 +7,12 @@ import {
   Button,
   Link,
   TextField,
+  Typography
 } from '@mui/joy'
+// import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
 import Image from "../../assets/images/hole-std-bckgrd.jpg";
 
 export default function RegistrationSide() {
@@ -120,7 +121,7 @@ export default function RegistrationSide() {
           <Typography component="h1" variant="h5">
             Registration
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1, width: 500  }}>
             <Grid container spacing={2} >
               <Grid item xs={6}>
                 <TextField
@@ -210,7 +211,7 @@ export default function RegistrationSide() {
               <Grid item xs></Grid>
               <Grid item>
                 <Link component={RouterLink} to={"/login"} >
-                  <Typography variant="body2" color="secondary">
+                  <Typography level="body2" color="secondary">
                     Already have an account? Sign In
                   </Typography>
                 </Link>
