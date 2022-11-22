@@ -151,7 +151,10 @@ export default function ProjectCards() {
   const handleEdit = (record) => {
     console.log("Record: ", record);
     const newRecord = { ...record };
+    // work around for lack of "returned" FK fields from API
     newRecord.file = record.image.file_name
+    newRecord.image_id = record.image.id
+    newRecord.user_id = record.user.id
 
     setRecordForEdit(newRecord) ;
     setOpenPopup(true)
@@ -211,7 +214,6 @@ export default function ProjectCards() {
               <CardCover>
                 <img
                   alt={item.image != "" && item.image != null ? item.image.alt_text : item.name}
-                  // TODO: Add relative path to image in DB
                   src={item.image != ""
                     ? tempBaseDir + item.image.file_name
                     : NoImage}

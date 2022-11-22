@@ -8,17 +8,21 @@
 
 //#region [General imports]
 import * as React from 'react';
-import theme from '../theme';
 import { useNavigate } from 'react-router-dom';
 import {
+  AspectRatio,
   Avatar,
+  Box,
   Button,
+  Card,
+  CardCover,
   IconButton,
   Sheet,
   TextField,
   Tooltip,
   // Typography
 } from '@mui/joy';
+import Image from 'mui-image';
 import { Fab, Typography } from '@mui/material';
 import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -76,6 +80,9 @@ export default function TitleBar(props) {
     <Sheet
       variant="outlined"
       sx={{
+        display: "flex",
+        flexDirection: "flex-row",
+        alignItems: "center",
         borderRadius: 'sm',
         gridColumn: '1/-1',
         bgcolor: 'background.componentBg',
@@ -92,16 +99,21 @@ export default function TitleBar(props) {
     >
       {/* //& Avatar/Icon/None */}
       {avatarIcon == "image" &&
-        <IconButton size="xl" variant="plain" >
-          <Avatar
-            alt="Remy Sharp"
-            src={`${avatarImage}`}
-            alt_text='project avatar'
-            size='lg'
-            {...stringAvatar('Rabbit Hole')}
-          />
-        </IconButton>
+        <Box sx={{width: "85px"}}>
+          <AspectRatio ratio={1}>
+        <Card >
+          <CardCover>
+            <img
+              src={`${avatarImage}`} 
+              // width="200px"
+            />
+          </CardCover>
+        </Card>
+        </AspectRatio>
+      </Box>
       }
+
+
       {avatarIcon == "icon" &&
         <IconButton
           size="lg"
