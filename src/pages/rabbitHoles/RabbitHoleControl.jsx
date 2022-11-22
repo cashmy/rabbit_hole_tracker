@@ -58,6 +58,11 @@ import {
   useChangeRabbitHoleStatusMutation,
   useUpdateRabbitHoleMutation,
 } from '../../features/rabbitHoleSlice';
+import {
+  useAddSolutionMutation,
+  useUpdateSolutionMutation,
+  useDeleteSolutionMutation,
+} from '../../features/solutionSlice';
 // #endregion
 
 // ^ MAIN COMPONENT
@@ -74,6 +79,7 @@ export default function RabbitHoleControl() {
   const [solutionForEdit, setSolutionForEdit] = useState(null);
   const [notify, setNotify] = useState({ isOpen: false, message: '', type: 'info' })
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
+  const [currentItem, setCurrentItem] = useState(null);
   // TODO: Change for production
   const tempBaseDir = 'http://localhost:8000/';
   // #endregion
@@ -84,9 +90,12 @@ export default function RabbitHoleControl() {
   const [addRabbitHole] = useAddRabbitHoleMutation();
   const [chgRabbitHole] = useChangeRabbitHoleStatusMutation();
   const [updateRabbitHole] = useUpdateRabbitHoleMutation();
+  const [addSolution] = useAddSolutionMutation();
+  const [updateSolution] = useUpdateSolutionMutation();
+  const [deleteSolution] = useDeleteSolutionMutation();
   // #endregion
 
-  useEffect(() => { 
+  useEffect(() => {
     if (location.state !== null && location.state.projectId !== undefined) {
       setProjectId(location.state.projectId);
       setProjectName(location.state.projectName);
@@ -126,7 +135,7 @@ export default function RabbitHoleControl() {
     setConfirmDialog({
       isOpen: true,
       title:
-        "Are you sure you want to delete this Curriculum Theme and all of its Detail?",
+        "Are you sure you want to delete this detail item - Rabbit Hole?",
       subTitle: "You can't undo this action.",
       onConfirm: () => {
         onDelete(id);
@@ -153,9 +162,10 @@ export default function RabbitHoleControl() {
     setDisplayGrid(!displayGrid);
   }
   const handleStatusChange = (id, newSts) => {
-      chgRabbitHole({ id, completed: newSts })
+    chgRabbitHole({ id, completed: newSts })
   }
-  const handleSolution = (record) =>{
+  const handleSolution = (record) => {
+    setCurrentItem(record.id);
     // 1 Determine add/edit mode
     if (record.solution === null) {
       setSolutionForEdit(null);
@@ -167,14 +177,18 @@ export default function RabbitHoleControl() {
     setOpenPopup2(true)
   }
   const solutionAddOrEdit = (solution, resetForm) => {
-
+    console.log("Solution: ", solution)
     let close = false
     if (solution.id === 0) {
-      // addRabbitHole(solution)
-      resetForm()
+      addSolution(solution).then((res) => {
+        chgRabbitHole({ id: currentItem, solution_id: res.data.id })
+      }
+      )
+
+      close = true
     }
     else {
-      // updateRabbitHole(solution)
+      updateSolution(solution)
       close = true
     }
     if (close) {
@@ -189,7 +203,33 @@ export default function RabbitHoleControl() {
       type: 'success'
     })
   };
-    // #endregion
+  const handleSolutionDelete = (record) => {
+    setConfirmDialog({
+      isOpen: true,
+      title:
+        "Are you sure you want to delete this Solution?",
+      subTitle: "You can't undo this action.",
+      onConfirm: () => {
+        setCurrentItem(record.id)
+        onSolutionDelete(record.solution.id);
+      },
+    })
+  };
+  const onSolutionDelete = (id) => {
+    setConfirmDialog({
+      ...confirmDialog,
+      isOpen: false,
+    });
+    deleteSolution(id).then((res) => {
+      chgRabbitHole({ id: currentItem, solution: null })
+    })
+    setNotify({
+      isOpen: true,
+      message: "Solution deleted",
+      type: "error",
+    });
+  };
+  // #endregion
 
   return (
     <Box
@@ -216,22 +256,25 @@ export default function RabbitHoleControl() {
       <Box
       >
         <Sheet
-        sx={{borderRadius: '10px'}}
+          sx={{ borderRadius: '10px' }}
         >
-      {/* //* Handle Display here */}
-      <Typography level="body" sx={{ textAlign: 'center' }}>
-        {displayGrid
-          ? "Grid"
-          // ? <RabbitHoleGrid projectId={projectId} handleEdit={handleEdit} handleDelete={handleDelete} handleSolution={handleSolution} />
-          // : "Table"
-          : <RabbitHoleTable 
-              projectId={projectId} 
-              handleEdit={handleEdit} 
-              handleDelete={handleDelete} 
-              handleStatusChange={handleStatusChange}
-              handleSolution={handleSolution} />
-        }
-      </Typography>
+          {/* //* Handle Display here */}
+          <Typography level="body" sx={{ textAlign: 'center' }}>
+            {displayGrid
+              ? "Grid"
+              // ? <RabbitHoleGrid projectId={projectId} handleEdit={handleEdit} handleDelete={handleDelete} handleSolution={handleSolution} />
+              // : "Table"
+              : <RabbitHoleTable
+                projectId={projectId}
+                handleEdit={handleEdit}
+                handleDelete={handleDelete}
+                handleStatusChange={handleStatusChange}
+                handleSolution={handleSolution}
+                handleSolutionDelete={handleSolutionDelete}
+                setCurrentItem={setCurrentItem}
+              />
+            }
+          </Typography>
 
         </Sheet>
       </Box>

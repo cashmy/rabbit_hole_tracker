@@ -22,7 +22,7 @@ export const apiSolutionSlice = createApi({
             // Get Solution
             fetchSolution: builder.query({
                 query: (body) => ({
-                    url: `${body.rabbit_hole_id}/`,
+                    url: `${body.id}/`,
                     method: "GET",
                 }),
                 providesTags: ["Solution"],
@@ -63,7 +63,7 @@ export const apiSolutionSlice = createApi({
                     url: `/${id}/`,
                     method: "DELETE",
                 }),
-                invalidatesTags: ["Solution"],
+                invalidatesTags: ["Solution", "RabbitHoles"],
             }),
         };
     },

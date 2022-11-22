@@ -144,7 +144,7 @@ export default function ImageLibraryTableV1() {
     setConfirmDialog({
       isOpen: true,
       title:
-        "Are you sure you want to delete this Curriculum Theme and all of its Detail?",
+        "Are you sure you want to delete this Image?",
       subTitle: "You can't undo this action.",
       onConfirm: () => {
         onDelete(id);

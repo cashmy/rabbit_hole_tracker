@@ -49,8 +49,8 @@ const componentTitle = "Rabbit Hole Logs";
 const searchText = "Search by Name, Type, or Description";
 const editToolTip = "Edit an item";
 const deleteToolTip = "Delete an item";
-const doneToolTip = "Complete an item";
-const solutionToolTip = "Add/Edit a solution to an item";
+const doneToolTip = "Toggle Completion Status";
+const solutionToolTip = "Add/Dlt a solution to an item";
 // #endregion
 
 // #region [RTK/Service Layer]
@@ -73,7 +73,7 @@ const columnCells = [
 // ^ MAIN COMPONENT
 export default function RabbitHoleTable(props) {
   // #region //* [Local State]
-  const { projectId, handleEdit, handleDelete, handleStatusChange, handleSolution } = props;
+  const { projectId, handleEdit, handleDelete, handleStatusChange, handleSolution, handleSolutionDelete, setCurrentItem } = props;
   const [filterFn, setFilterFn] = useState({ fn: items => { return items; } });
   const [notify, setNotify] = useState({ isOpen: false, message: '', type: 'info' })
   // #endregion
@@ -90,7 +90,11 @@ export default function RabbitHoleTable(props) {
   } = useTable(data, columnCells, filterFn,);
 
   const handleSltn = (item) => {
-    handleSolution(item);
+    if (item.solution) {
+      handleSolutionDelete(item);
+    } else {
+      handleSolution(item);
+    }
   }
 
 
@@ -110,8 +114,7 @@ export default function RabbitHoleTable(props) {
             ) : (
               recordsAfterPagingAndSorting().map((record, index) => (
                 <TableRow key={index}>
-                  {/* <TableCell>{record.id}</TableCell>
-                  <TableCell>{record.project.id}</TableCell> */}
+                    {/* //& Log_Type  */}
                   <TableCell>
                     <Chip
                       variant="solid"
@@ -133,32 +136,37 @@ export default function RabbitHoleTable(props) {
                             : "unclassified"}
                     </Chip>
                   </TableCell>
+
                   <TableCell>{record.name}</TableCell>
                   <TableCell>{record.description}</TableCell>
                   <TableCell>{record.rating}</TableCell>
+
+                  {/* //& Solution! */}
                   <TableCell>{record.solution &&
-                    <Tooltip 
+                    <Tooltip
                       arrow
                       variant="outlined"
                       color="primary"
-                      title={record.solution.description} 
-                      >
+                      title={record.solution.description}
+                    >
                       <Chip
                         startDecorator={<EmojiObjectsIcon />}
                         variant="solid"
                         color="success"
+                        onClick={() => handleSolution(record)}
                       >{record.solution.type}</Chip>
                     </Tooltip>
                   }
                   </TableCell>
+
+                  {/* //& Completed Status */}
                   <TableCell>{record.completed &&
                     <Chip
                       startDecorator={<DoneAllIcon />}
                       variant="solid"
                       color="primary"
-                    />
-
-                  }</TableCell>
+                    />}
+                    </TableCell>
 
                   {/* // *Actions */}
                   < TableCell >
@@ -167,17 +175,17 @@ export default function RabbitHoleTable(props) {
                     < Controls.ActionButton
                       tooltipText={solutionToolTip}
                       size="md"
-                      onClick={() => handleSltn(record)}
-                    >
-                      <EmojiObjectsIcon sx={{ color: "green" }} />
+                      onClick={() => handleSltn(record)}>
+                      <EmojiObjectsIcon sx={{
+                        color: record.solution ? "red" : "green"
+                      }} />
                     </Controls.ActionButton>
 
                     {/* //& Done */}
                     <Controls.ActionButton
                       tooltipText={doneToolTip}
                       size="md"
-                      onClick={() => handleStatusChange(record.id, !record.completed)}
-                    >
+                      onClick={() => handleStatusChange(record.id, !record.completed)}>
                       <DoneIcon sx={{ color: "darkorange" }} />
                     </Controls.ActionButton>
 
@@ -185,8 +193,7 @@ export default function RabbitHoleTable(props) {
                     <Controls.ActionButton
                       tooltipText={editToolTip}
                       size="md"
-                      onClick={() => handleEdit(record)}
-                    >
+                      onClick={() => handleEdit(record)}>
                       <EditOutlinedIcon sx={{ color: "darkcyan" }} />
                     </Controls.ActionButton>
 
@@ -194,8 +201,7 @@ export default function RabbitHoleTable(props) {
                     <Controls.ActionButton
                       tooltipText={deleteToolTip}
                       size="md"
-                      onClick={() => handleDelete(record.id)}
-                    >
+                      onClick={() => handleDelete(record.id)}>
                       <DeleteIcon sx={{ color: "red" }} />
                     </Controls.ActionButton>
 
