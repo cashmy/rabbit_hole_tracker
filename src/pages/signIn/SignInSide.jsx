@@ -113,7 +113,6 @@ export default function SignInSide() {
               variant="solid"
               margin="normal"
               required
-              fullWidth
               id="username"
               label="Username"
               name="username"
@@ -126,7 +125,6 @@ export default function SignInSide() {
               variant="solid"
               margin="normal"
               required
-              fullWidth
               name="password"
               label="Password"
               type="password"
@@ -146,7 +144,6 @@ export default function SignInSide() {
             /> */}
             <Button
               type="submit"
-              fullWidth
               variant="solid"
               color="primary"
               sx={{ mt: 3, mb: 2 }}

@@ -128,7 +128,6 @@ export default function RegistrationSide() {
                   variant="solid"
                   margin="normal"
                   required
-                  fullWidth
                   id="fname"
                   label="First Name"
                   name="fname"
@@ -143,7 +142,6 @@ export default function RegistrationSide() {
                   variant="solid"
                   margin="normal"
                   required
-                  fullWidth
                   id="lname"
                   label="Last Name"
                   name="lname"
@@ -157,7 +155,6 @@ export default function RegistrationSide() {
                   variant="solid"
                   margin="normal"
                   required
-                  fullWidth
                   id="userName"
                   label="UserName"
                   name="userName"
@@ -171,7 +168,6 @@ export default function RegistrationSide() {
                   variant="solid"
                   margin="normal"
                   required
-                  fullWidth
                   name="password"
                   label="Password"
                   type="password"
@@ -186,7 +182,6 @@ export default function RegistrationSide() {
                   variant="solid"
                   margin="normal"
                   required
-                  fullWidth
                   type="email"
                   id="email"
                   label="Email"
@@ -200,7 +195,6 @@ export default function RegistrationSide() {
 
             <Button
               type="submit"
-              fullWidth
               variant="solid"
               color="primary"
               sx={{ mt: 3, mb: 2 }}

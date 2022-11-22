@@ -138,7 +138,7 @@ export default function TitleBar(props) {
           startDecorator={<SearchRoundedIcon color="primary" />}
           endDecorator={
             <IconButton variant="outlined" size="sm" color="neutral" onClick={() => alert('/ clicked')}>
-              <Typography fontWeight="lg" fontSize="sm" textColor="text.tertiary">
+              <Typography fontWeight="lg" fontSize="sm">
                 /
               </Typography>
             </IconButton>

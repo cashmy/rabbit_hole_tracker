@@ -33,7 +33,7 @@ export default function Navigation() {
           <Typography
             id="nav-list-browse"
             fontWeight={700}
-            textColor="neutral.500"  // TODO fix this 
+            color="neutral" 
             sx={{
               fontSize: '10px',
               textTransform: 'uppercase',
@@ -137,7 +137,7 @@ export default function Navigation() {
         >
           <Typography
             id="nav-list-tags"
-            textColor="neutral.500"
+            color="neutral" 
             fontWeight={700}
             sx={{
               fontSize: '10px',

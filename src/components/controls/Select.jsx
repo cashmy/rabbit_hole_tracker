@@ -8,7 +8,7 @@ const Select = (props) => {
     const { name, label, value, error = null, onChange, placeholder, size, variant, options } = props
 
     return (
-        <FormControl variant='outlined' fullWidth
+        <FormControl variant='outlined' 
             {...(error && { error: true })}
         >
             <FormLabel sx={{fontSize:'xs'}}> {label || 'Select Label'}</FormLabel>

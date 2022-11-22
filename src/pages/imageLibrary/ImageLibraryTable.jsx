@@ -191,11 +191,7 @@ export default function ImageLibraryTable(props) {
   }
   // #endregion
 
-  useEffect(() => {
-    if (data) {
-      console.log("Data", data)
-    }
-  }, [data]);
+
   return (
     <Box
       sx={{

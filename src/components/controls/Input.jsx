@@ -13,7 +13,6 @@ const Input = (props) => {
       value={value} 
     //   color={color || "primary"}
       onChange={onChange}
-      fullWidth
       {...(error && { error: true, helperText: error })}
       {...other}
     />

@@ -10,7 +10,7 @@ const Switch = (props) => {
 
     return (
         <Tooltip title={`Toggle ${label || 'switch'} status`}>
-            <FormControl variant='outlined' fullWidth
+            <FormControl variant='outlined' 
                 {...(error && { error: true })}
             >
                 <FormLabel

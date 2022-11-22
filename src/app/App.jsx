@@ -146,7 +146,7 @@ function App() {
             </Box>
 
             {/* //* Center Component Title */}
-            <Typography fontWeight="lg" fontSize="md" textColor="text.tertiary">
+            <Typography fontWeight="lg" fontSize="md">
               {/* {componentTitle} */}
             </Typography>
 
