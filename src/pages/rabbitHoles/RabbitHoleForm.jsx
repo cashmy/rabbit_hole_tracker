@@ -11,7 +11,7 @@ const initialFValues = {
   description: '',
   log_type: '',
   rating: 0,
-  solution: false,
+  solution: null,
   completed: false,
   archived: false,
 }
@@ -59,7 +59,6 @@ const PageForm = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (validate())
-    console.log("values: ", values);
       addOrEdit(values, resetForm);
   };
   const handleReset = () => {
@@ -68,7 +67,6 @@ const PageForm = (props) => {
     else setValues({ ...recordForEdit })
   }
   const handleSelectChange = (e, newValue) => {
-    console.log("onSelectChange: ", e, newValue);
     setValues(
       {
         ...values,
@@ -130,13 +128,11 @@ const PageForm = (props) => {
             </Grid>
             <Grid item xs={3} >
               <Controls.Select
-                variant="soft"
                 name="log_type"
                 label="Log Type"
                 value={values.log_type}
-                error={errors.log_type}
                 onChange={handleSelectChange}
-                placeholder="Choose one..."
+                error={errors.log_type}
                 options={[
                   { id: 'i', title: 'Impediment' },
                   { id: 'd', title: 'Distraction' },
@@ -152,8 +148,8 @@ const PageForm = (props) => {
                 name="solution"
                 label="Solution"
                 color="success"
-                value={values.solution}
-                onChange={handleToggleChange}
+                // value={values.solution}
+                // onChange={handleToggleChange}
               />
             </Grid>
             <Grid item xs={2} >

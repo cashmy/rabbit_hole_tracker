@@ -45,11 +45,11 @@ import Notification from '../../components/controls/Notification';
 
 // #region [Customizable imports]
 import PageForm from "./RabbitHoleForm";
+import SolutionForm from "../solutions/SolutionForm";
 import PageDialog from '../page_dialog';
 import RabbitHoleTable from "./RabbitHoleTable";
 // #endregion
 
-// *** RTK/Service Layer(s) ***
 // #region [RTK Customizable Services]
 import {
   useDeleteRabbitHoleMutation,
@@ -60,6 +60,7 @@ import {
 } from '../../features/rabbitHoleSlice';
 // #endregion
 
+// ^ MAIN COMPONENT
 export default function RabbitHoleControl() {
   // #region //* [Local State]
   const [projectId, setProjectId] = useState(1);
@@ -68,7 +69,9 @@ export default function RabbitHoleControl() {
   const location = useLocation();
   const [displayGrid, setDisplayGrid] = React.useState(false);
   const [openPopup, setOpenPopup] = useState(false)
+  const [openPopup2, setOpenPopup2] = useState(false)
   const [recordForEdit, setRecordForEdit] = useState(null);
+  const [solutionForEdit, setSolutionForEdit] = useState(null);
   const [notify, setNotify] = useState({ isOpen: false, message: '', type: 'info' })
   const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '', subTitle: '' })
   // TODO: Change for production
@@ -84,7 +87,6 @@ export default function RabbitHoleControl() {
   // #endregion
 
   useEffect(() => { 
-    console.log("Avatar URL: ", location.state);
     if (location.state !== null && location.state.projectId !== undefined) {
       setProjectId(location.state.projectId);
       setProjectName(location.state.projectName);
@@ -150,15 +152,44 @@ export default function RabbitHoleControl() {
   const handleDisplay = () => {
     setDisplayGrid(!displayGrid);
   }
-  const handleStatusChange = (id, field, newSts) => {
-    console.log("Changing status of " + field + " to " + newSts);
-    if (field === 'solution') {
-      chgRabbitHole({ id, solution: newSts })
-    } else {
+  const handleStatusChange = (id, newSts) => {
       chgRabbitHole({ id, completed: newSts })
-    }
   }
-  // #endregion
+  const handleSolution = (record) =>{
+    // 1 Determine add/edit mode
+    if (record.solution === null) {
+      setSolutionForEdit(null);
+    } else {
+      // 2 Set recordForEdit
+      setSolutionForEdit(record.solution)
+    }
+    // 3 Open Popup
+    setOpenPopup2(true)
+  }
+  const solutionAddOrEdit = (solution, resetForm) => {
+
+    let close = false
+    if (solution.id === 0) {
+      // addRabbitHole(solution)
+      resetForm()
+    }
+    else {
+      // updateRabbitHole(solution)
+      close = true
+    }
+    if (close) {
+      resetForm()
+      setSolutionForEdit(null);
+      setOpenPopup2(false) // Close Popup modal
+    }
+
+    setNotify({
+      isOpen: true,
+      message: 'Submitted Successfully',
+      type: 'success'
+    })
+  };
+    // #endregion
 
   return (
     <Box
@@ -191,13 +222,14 @@ export default function RabbitHoleControl() {
       <Typography level="body" sx={{ textAlign: 'center' }}>
         {displayGrid
           ? "Grid"
-          // ? <RabbitHoleGrid projectId={projectId} handleEdit={handleEdit} handleDelete={handleDelete} />
+          // ? <RabbitHoleGrid projectId={projectId} handleEdit={handleEdit} handleDelete={handleDelete} handleSolution={handleSolution} />
           // : "Table"
           : <RabbitHoleTable 
               projectId={projectId} 
               handleEdit={handleEdit} 
               handleDelete={handleDelete} 
-              handleStatusChange={handleStatusChange} />
+              handleStatusChange={handleStatusChange}
+              handleSolution={handleSolution} />
         }
       </Typography>
 
@@ -210,6 +242,9 @@ export default function RabbitHoleControl() {
       <Notification notify={notify} setNotify={setNotify} />
       <PageDialog openPopup={openPopup} setOpenPopup={setOpenPopup} title={"RabbitHole"} titleColor={"darkblue"} pageWidth={'md'} >
         <PageForm recordForEdit={recordForEdit} addOrEdit={addOrEdit} />
+      </PageDialog>
+      <PageDialog openPopup={openPopup2} setOpenPopup={setOpenPopup2} title={"Solution"} titleColor={"green"} pageWidth={'sm'} >
+        <SolutionForm recordForEdit={solutionForEdit} addOrEdit={solutionAddOrEdit} />
       </PageDialog>
       <Controls.ConfirmDialog confirmDialog={confirmDialog} setConfirmDialog={setConfirmDialog} />
 

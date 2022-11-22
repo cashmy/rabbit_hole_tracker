@@ -12,6 +12,7 @@ import { useState, useEffect } from 'react';
 import {
   Box,
   Chip,
+  Tooltip,
   Typography,
 } from '@mui/joy';
 import {
@@ -20,6 +21,7 @@ import {
   TableContainer,
   TableRow,
 } from '@mui/material'
+import { flexbox } from '@mui/system';
 
 
 // * Mui Icons
@@ -44,8 +46,6 @@ import useTable from "../../hooks/useTable";
 
 // #region [Customizable texts]
 const componentTitle = "Rabbit Hole Logs";
-const detailTitle = "Rabbit Hole Log Detail";
-const detailTitle2 = "Rabbit Hole Log Solution";
 const searchText = "Search by Name, Type, or Description";
 const editToolTip = "Edit an item";
 const deleteToolTip = "Delete an item";
@@ -57,13 +57,10 @@ const solutionToolTip = "Add/Edit a solution to an item";
 import {
   useFetchAllRabbitHolesQuery,
 } from '../../features/rabbitHoleSlice';
-import { flexbox } from '@mui/system';
 // #endregion
 
 // * Table Columns
 const columnCells = [
-  // { id: 'id', label: 'ID', numeric: true, hidden: true },
-  // { id: 'project', label: 'Project ID' },
   { id: 'log_type', label: 'Type' },
   { id: 'name', label: 'Name' },
   { id: 'description', label: 'Description' },
@@ -76,7 +73,7 @@ const columnCells = [
 // ^ MAIN COMPONENT
 export default function RabbitHoleTable(props) {
   // #region //* [Local State]
-  const { projectId, handleEdit, handleDelete, handleStatusChange } = props;
+  const { projectId, handleEdit, handleDelete, handleStatusChange, handleSolution } = props;
   const [filterFn, setFilterFn] = useState({ fn: items => { return items; } });
   const [notify, setNotify] = useState({ isOpen: false, message: '', type: 'info' })
   // #endregion
@@ -91,6 +88,10 @@ export default function RabbitHoleTable(props) {
     TblHead,
     recordsAfterPagingAndSorting
   } = useTable(data, columnCells, filterFn,);
+
+  const handleSltn = (item) => {
+    handleSolution(item);
+  }
 
 
   return (
@@ -113,34 +114,41 @@ export default function RabbitHoleTable(props) {
                   <TableCell>{record.project.id}</TableCell> */}
                   <TableCell>
                     <Chip
-                    variant="solid"
-                    color={record.log_type === "i" 
-                      ? "danger" 
-                      : record.log_type === "d" 
-                        ?  "warning" 
-                        : record.log_type ==="t"
-                          ? "success" 
-                          : "neutral"}
+                      variant="solid"
+                      color={record.log_type === "i"
+                        ? "danger"
+                        : record.log_type === "d"
+                          ? "warning"
+                          : record.log_type === "t"
+                            ? "success"
+                            : "neutral"}
                     >
-                      
-                      {record.log_type === "i" 
-                      ? "impediment" 
-                      : record.log_type === "d" 
-                        ?  "distraction" 
-                        : record.log_type ==="t"
-                          ? "task" 
-                          : "unclassified"}
+
+                      {record.log_type === "i"
+                        ? "impediment"
+                        : record.log_type === "d"
+                          ? "distraction"
+                          : record.log_type === "t"
+                            ? "task"
+                            : "unclassified"}
                     </Chip>
                   </TableCell>
                   <TableCell>{record.name}</TableCell>
                   <TableCell>{record.description}</TableCell>
                   <TableCell>{record.rating}</TableCell>
                   <TableCell>{record.solution &&
-                    <Chip
-                      startDecorator={<EmojiObjectsIcon />}
-                      variant="solid"
-                      color="success"
-                    />
+                    <Tooltip 
+                      arrow
+                      variant="outlined"
+                      color="primary"
+                      title={record.solution.description} 
+                      >
+                      <Chip
+                        startDecorator={<EmojiObjectsIcon />}
+                        variant="solid"
+                        color="success"
+                      >{record.solution.type}</Chip>
+                    </Tooltip>
                   }
                   </TableCell>
                   <TableCell>{record.completed &&
@@ -159,7 +167,7 @@ export default function RabbitHoleTable(props) {
                     < Controls.ActionButton
                       tooltipText={solutionToolTip}
                       size="md"
-                      onClick={() => handleStatusChange(record.id, "solution", !record.solution)}
+                      onClick={() => handleSltn(record)}
                     >
                       <EmojiObjectsIcon sx={{ color: "green" }} />
                     </Controls.ActionButton>
@@ -168,7 +176,7 @@ export default function RabbitHoleTable(props) {
                     <Controls.ActionButton
                       tooltipText={doneToolTip}
                       size="md"
-                      onClick={() => handleStatusChange(record.id, "completed", !record.completed)}
+                      onClick={() => handleStatusChange(record.id, !record.completed)}
                     >
                       <DoneIcon sx={{ color: "darkorange" }} />
                     </Controls.ActionButton>

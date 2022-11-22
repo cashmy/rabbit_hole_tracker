@@ -5,7 +5,7 @@ import { useForm, Form } from '../../hooks/useForm';
 
 const initialFValues = {
   id: 0,
-  type: 's',
+  type: '',
   description: '',
 }
 
@@ -51,6 +51,14 @@ const SolutionForm = (props) => {
       resetForm()
     else setValues({ ...recordForEdit })
   }
+  const handleSelectChange = (e, newValue) => {
+    setValues(
+      {
+        ...values,
+        type: newValue
+      }
+    )
+  }
   useEffect(() => {
     if (recordForEdit != null)
       setValues({
@@ -64,23 +72,21 @@ const SolutionForm = (props) => {
       <Form>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-
-              <Controls.Select
+            <Controls.Select
               name="type"
-              label="Type (s/r)"
+              label="Solution Type"
               value={values.type}
-              onChange={handleInputChange}
+              onChange={handleSelectChange}
               error={errors.type}
               options={[
-                  { id: "s", title: "Solution" },
-                  { id: "r", title: "Redirect/Re-focus" },
+                { id: "s", title: "Solution" },
+                { id: "r", title: "Redirect/Re-focus" },
               ]}
-          />
+            />
           </Grid>
           <Grid item xs={12} sx={{ display: "flex", flexDirection: "column" }}>
-            <Controls.Input
-              multiline
-              minRows={5}
+            <Controls.TextareaAuto
+              minRows={3}
               maxRows={5}
               style={{ flexGrow: 1 }}
               aria-label="description"
