@@ -78,7 +78,6 @@ const PageForm = (props) => {
   // SaveSubmit Callback handler - event driven
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Values: ", values);
     if (validate())
       addOrEdit(values, resetForm);
       setFileObject(noImage);

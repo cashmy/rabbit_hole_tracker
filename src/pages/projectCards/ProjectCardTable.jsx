@@ -149,7 +149,6 @@ export default function ProjectCards() {
     });
   };
   const handleEdit = (record) => {
-    console.log("Record: ", record);
     const newRecord = { ...record };
     // work around for lack of "returned" FK fields from API
     newRecord.file = record.image.file_name
@@ -168,7 +167,6 @@ export default function ProjectCards() {
     setCurrentItem(null);
   };
   const handleDetails = (item) => {
-    console.log("Item: ", item);
     navigate("/rabbitHole", { state: {projectId: item.id, projectName: item.name, projectImage: item.image.file_name }});
   }
   // #endregion
