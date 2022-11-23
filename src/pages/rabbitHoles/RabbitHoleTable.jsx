@@ -13,6 +13,7 @@ import {
   Box,
   Chip,
   Tooltip,
+  Textarea,
   Typography,
 } from '@mui/joy';
 import {
@@ -114,7 +115,7 @@ export default function RabbitHoleTable(props) {
             ) : (
               recordsAfterPagingAndSorting().map((record, index) => (
                 <TableRow key={index}>
-                    {/* //& Log_Type  */}
+                  {/* //& Log_Type  */}
                   <TableCell>
                     <Chip
                       variant="solid"
@@ -147,7 +148,44 @@ export default function RabbitHoleTable(props) {
                       arrow
                       variant="outlined"
                       color="primary"
-                      title={record.solution.description}
+                      title={
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            maxWidth: 320,
+                            justifyContent: 'center',
+                            p: 1,
+                          }}
+                        >
+                          <Typography
+                            fontSize="sm"
+                            textColor="blue" 
+                            // color="neutral"
+                            >
+                            {record.name}
+                          </Typography>
+                          <Typography
+                            fontSize="sm"
+                            textColor="neutral.600"
+                            >
+                            {record.description}
+                          </Typography>
+                          <Box sx={{ display: 'flex', gap: 1, width: '100%', mt: 1 }}>
+                            <EmojiObjectsIcon color="success" />
+                            <Typography fontWeight='lg' fontSize='sm'
+                              sx={{ display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center' 
+                                  }}
+                            >
+                              {record.solution.description}
+
+                            </Typography>
+                          </Box>
+
+                        </Box>
+                      }
                     >
                       <Chip
                         startDecorator={<EmojiObjectsIcon />}
@@ -160,13 +198,15 @@ export default function RabbitHoleTable(props) {
                   </TableCell>
 
                   {/* //& Completed Status */}
-                  <TableCell>{record.completed &&
+                  < TableCell > {
+                    record.completed &&
                     <Chip
                       startDecorator={<DoneAllIcon />}
                       variant="solid"
                       color="primary"
-                    />}
-                    </TableCell>
+                    />
+                  }
+                  </TableCell>
 
                   {/* // *Actions */}
                   < TableCell >
@@ -213,10 +253,10 @@ export default function RabbitHoleTable(props) {
           </TableBody>
         </TblContainer>
 
-      </TableContainer>
+      </TableContainer >
 
       {/* //* Dialogs, Modals, Menus & Popups */}
-      <Notification notify={notify} setNotify={setNotify} />
-    </Box>
+      < Notification notify={notify} setNotify={setNotify} />
+    </Box >
   )
 }

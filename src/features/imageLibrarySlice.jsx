@@ -1,21 +1,6 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseApiSlice } from "./rhBaseApiSlice";
 
-export const apiImageLibrarySlice = createApi({
-    reducerPath: "apiImageLibrary",
-    baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8000/api/images",
-        // prepareHeaders(headers) {
-        //     // const token = localStorage.getItem("token");
-        //     // headers.localStorage("authorization", `Bearer ${token}`);
-        //     // headers.set("authorization", `Bearer ${localStorage.getItem("token")}`);
-        //     headers.set("Content-Type", "multipart/form-data");
-            // console.log([...headers]);
-        //     return headers;
-        // },
-    }),
-    tagTypes: ["Images"],
-    refetchOnFocus: true,
-
+export const apiImageLibrarySlice = baseApiSlice.injectEndpoints({
     endpoints: (builder) => {
         return {
             // Get All Images by User
@@ -29,7 +14,7 @@ export const apiImageLibrarySlice = createApi({
             // Get All Images (Admin)
             fetchAllImagesAdmin: builder.query({
                 query(body) {
-                    return `/`;
+                    return `/images/`;
                 },
                 providesTags: ["Images"],
             }),
@@ -37,7 +22,7 @@ export const apiImageLibrarySlice = createApi({
             // Add a Image
             addImage: builder.mutation({
                 query: (body) => ({
-                    url: "/",
+                    url: "/images/",
                     method: "POST",
                     body,
                     dataType: "jsonp",
@@ -48,7 +33,7 @@ export const apiImageLibrarySlice = createApi({
             // Update A Image
             updateImage: builder.mutation({
                 query: (body) => ({
-                    url: `/${body.id}/`,
+                    url: `/images/${body.id}/`,
                     method: "PATCH",
                     body:body.formData,
                     dataType: "jsonp",
@@ -59,7 +44,7 @@ export const apiImageLibrarySlice = createApi({
             // Delete a Image
             deleteImage: builder.mutation({
                 query: (id) => ({
-                    url: `/${id}/`,
+                    url: `/images/${id}/`,
                     method: "DELETE",
                 }),
                 invalidatesTags: ["Images"],

@@ -1,24 +1,14 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const apiProjectSlice = createApi({
-    reducerPath: "apiProject",
-    baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8000/api/projects",
-        prepareHeaders(headers) {
-            // const token = localStorage.getItem("token");
-            // headers.localStorage("authorization", `Bearer ${token}`);
-            return headers;
-        },
-    }),
-    tagTypes: ["Projects"],
-    refetchOnFocus: true,
+import { baseApiSlice } from "./rhBaseApiSlice";
+
+export const apiProjectSlice = baseApiSlice.injectEndpoints({
 
     endpoints: (builder) => {
         return {
             // Get All Projects by Archived status
             fetchAllProjectsByArchiveSts: builder.query({
                 query(body) {
-                    return `/archive/${body}/`;
+                    return `/projects/archive/${body}/`;
                 },
                 providesTags: ["Projects"],
             }),
@@ -26,7 +16,7 @@ export const apiProjectSlice = createApi({
             // Get All Projects (Admin)
             fetchAllProjectsAdmin: builder.query({
                 query(body) {
-                    return `/admin/`;
+                    return `/projects/admin/`;
                 },
                 providesTags: ["Projects"],
             }),
@@ -34,7 +24,7 @@ export const apiProjectSlice = createApi({
             // Add a Project
             addProject: builder.mutation({
                 query: (body) => ({
-                    url: "/",
+                    url: "/projects/",
                     method: "POST",
                     body,
                 }),
@@ -44,7 +34,7 @@ export const apiProjectSlice = createApi({
             // Update A Project
             updateProject: builder.mutation({
                 query: (body) => ({
-                    url: `/${body.id}/`,
+                    url: `/projects/${body.id}/`,
                     method: "PUT",
                     body,
                 }),
@@ -53,7 +43,7 @@ export const apiProjectSlice = createApi({
 
             changeProjectStatus: builder.mutation({
                 query: (body) => ({
-                    url: `/${body.id}/`,
+                    url: `/projects/${body.id}/`,
                     method: "PATCH",
                     body,
                 }),
@@ -63,7 +53,7 @@ export const apiProjectSlice = createApi({
             // Delete a Project
             deleteProject: builder.mutation({
                 query: (id) => ({
-                    url: `/${id}/`,
+                    url: `/projects/${id}/`,
                     method: "DELETE",
                 }),
                 invalidatesTags: ["Projects"],

@@ -1,69 +1,54 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseApiSlice } from "./rhBaseApiSlice";
 
-export const apiSolutionSlice = createApi({
-    reducerPath: "apiSolution",
-    baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8000/api/solutions",
-        // prepareHeaders(headers) {
-        //     // const token = localStorage.getItem("token");
-        //     // headers.localStorage("authorization", `Bearer ${token}`);
-        //     // headers.set("authorization", `Bearer ${localStorage.getItem("token")}`);
-        //     headers.set("Content-Type", "multipart/form-data");
-            // console.log([...headers]);
-        //     return headers;
-        // },
-    }),
-    tagTypes: ["Solution"],
-    refetchOnFocus: true,
+export const apiSolutionSlice = baseApiSlice.injectEndpoints({
 
-    endpoints: (builder) => {
+    endpoints: (build) => {
         return {
 
             // Get Solution
-            fetchSolution: builder.query({
+            fetchSolution: build.query({
                 query: (body) => ({
-                    url: `${body.id}/`,
+                    url: `/solutions/${body.id}/`,
                     method: "GET",
                 }),
-                providesTags: ["Solution"],
             }),
 
             // Add a Solution
-            addSolution: builder.mutation({
+            addSolution: build.mutation({
                 query: (body) => ({
-                    url: '/',
+                    url: '/solutions/',
                     method: "POST",
                     body,
                 }),
-                invalidatesTags: ["Solution"],
+                invalidatesTags: ["RabbitHoles"],
             }),
 
-            changeSolutionStatus: builder.mutation({
+            changeSolutionStatus: build.mutation({
                 query: (body) => ({
-                    url: `/${body.id}/`,
+                    url: `/solutions/${body.id}/`,
                     method: "PATCH",
                     body,
                 }),
-                invalidatesTags: ["Solution"],
+                invalidatesTags: ["RabbitHoles"],
             }),
 
             // Update A Solution
-            updateSolution: builder.mutation({
+            updateSolution: build.mutation({
                 query: (body) => ({
-                    url: `/${body.id}/`,
+                    url: `/solutions/${body.id}/`,
                     method: "PUT",
                     body,
                 }),
-                invalidatesTags: ["Solution"],
+                invalidatesTags: ["RabbitHoles"],
             }),
 
             // Delete a Solution
-            deleteSolution: builder.mutation({
+            deleteSolution: build.mutation({
                 query: (id) => ({
-                    url: `/${id}/`,
+                    url: `/solutions/${id}/`,
                     method: "DELETE",
                 }),
-                invalidatesTags: ["Solution", "RabbitHoles"],
+                invalidatesTags: ["RabbitHoles"],
             }),
         };
     },

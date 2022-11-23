@@ -1,52 +1,38 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseApiSlice } from "./rhBaseApiSlice";
 
-export const apiRabbitHoleSlice = createApi({
-    reducerPath: "apiRabbitHoles",
-    baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:8000/api/rabbit_holes",
-        // prepareHeaders(headers) {
-        //     // const token = localStorage.getItem("token");
-        //     // headers.localStorage("authorization", `Bearer ${token}`);
-        //     // headers.set("authorization", `Bearer ${localStorage.getItem("token")}`);
-        //     headers.set("Content-Type", "multipart/form-data");
-            // console.log([...headers]);
-        //     return headers;
-        // },
-    }),
-    tagTypes: ["RabbitHoles"],
-    refetchOnFocus: true,
+export const apiRabbitHoleSlice = baseApiSlice.injectEndpoints({
 
-    endpoints: (builder) => {
+    endpoints: (build) => {
         return {
             // Get All Rabbit Holes by Project ID
-            fetchAllRabbitHoles: builder.query({
+            fetchAllRabbitHoles: build.query({
                 query(body) {
-                    return `/project/${body}/`;
+                    return `/rabbit_holes/project/${body}/`;
                 },
                 providesTags: ["RabbitHoles"],
             }),
 
             // Get All Rabbit Holes for a Project
-            fetchAllRabbitHolesAdmin: builder.query({
+            fetchAllRabbitHolesAdmin: build.query({
                 query(body) {
-                    return `/`;
+                    return `/rabbit_holes/`;
                 },
                 providesTags: ["RabbitHoles"],
             }),
 
             // Add a Rabbit Hole
-            addRabbitHole: builder.mutation({
+            addRabbitHole: build.mutation({
                 query: (body) => ({
-                    url: `/project/${body.project_id}/`,
+                    url: `/rabbit_holes/project/${body.project_id}/`,
                     method: "POST",
                     body,
                 }),
                 invalidatesTags: ["RabbitHoles"],
             }),
 
-            changeRabbitHoleStatus: builder.mutation({
+            changeRabbitHoleStatus: build.mutation({
                 query: (body) => ({
-                    url: `/${body.id}/`,
+                    url: `/rabbit_holes/${body.id}/`,
                     method: "PATCH",
                     body,
                 }),
@@ -54,9 +40,9 @@ export const apiRabbitHoleSlice = createApi({
             }),
 
             // Update A Rabbit Hole
-            updateRabbitHole: builder.mutation({
+            updateRabbitHole: build.mutation({
                 query: (body) => ({
-                    url: `/${body.id}/`,
+                    url: `/rabbit_holes/${body.id}/`,
                     method: "PUT",
                     body,
                 }),
@@ -64,9 +50,9 @@ export const apiRabbitHoleSlice = createApi({
             }),
 
             // Delete a Rabbit Hole
-            deleteRabbitHole: builder.mutation({
+            deleteRabbitHole: build.mutation({
                 query: (id) => ({
-                    url: `/${id}/`,
+                    url: `/rabbit_holes/${id}/`,
                     method: "DELETE",
                 }),
                 invalidatesTags: ["RabbitHoles"],
