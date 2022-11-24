@@ -47,6 +47,7 @@ import ImageLibraryTableV1 from '../pages/imageLibrary/ImageLibraryTableV1';
 import SignInSide from '../pages/signIn/SignInSide';
 import RegistrationSide from '../pages/signIn/RegistrationSide';
 import RabbitHoleControl from '../pages/rabbitHoles/RabbitHoleControl';
+import PageNotFound from '../404';
 // #endregion
 
 
@@ -219,7 +220,7 @@ function App() {
                 <Route path="/registration" element={<RegistrationSide />} />
                 <Route path="/login" element={<SignInSide />} />
                 <Route path="/rabbitHole" element={<RabbitHoleControl />} />
-                {/* <Route path="*" element={<Navigate to="/projects" />} /> */}
+                <Route path="*" element={<PageNotFound />} />
               </Routes>
 
 
