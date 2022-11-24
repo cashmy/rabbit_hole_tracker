@@ -3,7 +3,7 @@
  * @github [https://github.com/cashmy]
  * @create date 2022-06-07 22:22:03
  * @modify date 2022-11-21 22:22:03
- * @desc Basic Table page for the Rabbit Hole app.
+ * @desc roject Details (Rabbit Holes) in a standard Table format.
  */
 
 // #region [General imports]
@@ -13,7 +13,6 @@ import {
   Box,
   Chip,
   Tooltip,
-  Textarea,
   Typography,
 } from '@mui/joy';
 import {
@@ -180,7 +179,6 @@ export default function RabbitHoleTable(props) {
                                   }}
                             >
                               {record.solution.description}
-
                             </Typography>
                           </Box>
 

@@ -46,7 +46,6 @@ import PageForm from "./ImageForm";
 import PageDialog from '../page_dialog';
 // #endregion
 
-// *** RTK/Service Layer(s) ***
 // #region [RTK Customizable Services]
 import {
   useDeleteImageMutation,
@@ -57,7 +56,7 @@ import {
 } from '../../features/imageLibrarySlice';
 // #endregion
 
-
+// ^ MAIN COMPONENT
 export default function ImageLibraryTable(props) {
   // #region //* [Local State]
   const {selectImage} = props;

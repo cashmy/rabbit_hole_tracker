@@ -48,6 +48,8 @@ import PageForm from "./RabbitHoleForm";
 import SolutionForm from "../solutions/SolutionForm";
 import PageDialog from '../page_dialog';
 import RabbitHoleTable from "./RabbitHoleTable";
+import RabbitHoleGrid from "./RabbitHoleGrid";
+
 // #endregion
 
 // #region [RTK Customizable Services]
@@ -72,7 +74,7 @@ export default function RabbitHoleControl() {
   const [projectName, setProjectName] = useState('Unknown');
   const [projectImageURL, setProjectImageURL] = useState('');
   const location = useLocation();
-  const [displayGrid, setDisplayGrid] = React.useState(false);
+  const [displayGrid, setDisplayGrid] = React.useState(true);
   const [openPopup, setOpenPopup] = useState(false)
   const [openPopup2, setOpenPopup2] = useState(false)
   const [recordForEdit, setRecordForEdit] = useState(null);
@@ -261,8 +263,15 @@ export default function RabbitHoleControl() {
           {/* //* Handle Display here */}
           <Typography level="body" sx={{ textAlign: 'center' }}>
             {displayGrid
-              ? "Grid"
-              // ? <RabbitHoleGrid projectId={projectId} handleEdit={handleEdit} handleDelete={handleDelete} handleSolution={handleSolution} />
+              // Grid View
+              ? <RabbitHoleGrid 
+                projectId={projectId} 
+                handleEdit={handleEdit} 
+                handleDelete={handleDelete} 
+                handleSolution={handleSolution} 
+                handleSolutionDelete={handleSolutionDelete}
+                setCurrentItem={setCurrentItem}
+                />
               // : "Table"
               : <RabbitHoleTable
                 projectId={projectId}

@@ -136,7 +136,7 @@ const PageForm = (props) => {
                 options={[
                   { id: 'i', title: 'Impediment' },
                   { id: 'd', title: 'Distraction' },
-                  { id: 't', title: 'Task' },
+                  { id: 't', title: 'External Task' },
                   { id: 'u', title: 'Unclassified' },
                 ]}
               />
