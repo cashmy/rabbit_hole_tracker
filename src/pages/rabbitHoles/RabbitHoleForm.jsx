@@ -12,6 +12,7 @@ const initialFValues = {
   log_type: '',
   rating: 0,
   solution: null,
+  solution_id: null,
   completed: false,
   archived: false,
 }
@@ -29,6 +30,10 @@ const PageForm = (props) => {
       temp.name = fieldValues.name
         ? ""
         : "This field is required."
+    if ('name' in fieldValues && temp.name === "")
+      temp.name = fieldValues.name.length < 51
+        ? ""
+        : "Max number of characters is 50 - current length is: " + fieldValues.name.length
     if ('description' in fieldValues)
       temp.description = fieldValues.description
         ? ""
@@ -58,8 +63,9 @@ const PageForm = (props) => {
   // SaveSubmit Callback handler - event driven
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (validate())
+    if (validate()){
       addOrEdit(values, resetForm);
+    }
   };
   const handleReset = () => {
     if (recordForEdit == null)
@@ -73,6 +79,9 @@ const PageForm = (props) => {
         log_type: newValue
       }
     )
+  }
+  const handleSolutionChange =() => {
+    alert("This functionality has not been implemented yet.")
   }
   useEffect(() => {
     if (recordForEdit != null)
@@ -136,7 +145,7 @@ const PageForm = (props) => {
                 options={[
                   { id: 'i', title: 'Impediment' },
                   { id: 'd', title: 'Distraction' },
-                  { id: 't', title: 'External Task' },
+                  { id: 't', title: 'Tasks' },
                   { id: 'u', title: 'Unclassified' },
                 ]}
               />
@@ -149,7 +158,7 @@ const PageForm = (props) => {
                 label="Solution"
                 color="success"
                 // value={values.solution}
-                // onChange={handleToggleChange}
+                onChange={handleSolutionChange}
               />
             </Grid>
             <Grid item xs={2} >
