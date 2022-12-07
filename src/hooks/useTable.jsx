@@ -103,6 +103,7 @@ export default function useTable(records, columnCells, filterFn, theadColor, ...
       if (order !== 0) return order;
       return a[1] - b[1];
     });
+    // console.log("Stablized array: ", stabilizedThis)
     return stabilizedThis.map((el) => el[0]);
   }
 
@@ -113,6 +114,18 @@ export default function useTable(records, columnCells, filterFn, theadColor, ...
   }
 
   function descendingComparator(a, b, orderBy) {
+    // Handle optional null values in sorting
+    if (a[orderBy] === null && b[orderBy] === null) {
+      return 0;
+    }
+    if (a[orderBy] === null) {
+      return 1;
+    }
+    if (b[orderBy] === null) {
+      return -1;
+    }
+
+    // Sort standard data values
     if (b[orderBy] < a[orderBy]) {
       return -1; // Need to switch elements
     }
