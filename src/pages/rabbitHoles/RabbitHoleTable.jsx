@@ -39,8 +39,6 @@ import Notification from '../../components/controls/Notification';
 // #endregion
 
 // #region [Customizable imports]
-// import PageForm from "./RabbitHoleForm";
-// import PageDialog from '../page_dialog';
 import useTable from "../../hooks/useTable";
 // #endregion
 
@@ -73,7 +71,14 @@ const columnCells = [
 // ^ MAIN COMPONENT
 export default function RabbitHoleTable(props) {
   // #region //* [Local State]
-  const { projectId, handleEdit, handleDelete, handleStatusChange, handleSolution, handleSolutionDelete, setCurrentItem } = props;
+  const { 
+    projectId, 
+    handleEdit, 
+    handleDelete, 
+    handleStatusChange, 
+    handleSolution, 
+    handleSolutionDelete, 
+  } = props;
   const [filterFn, setFilterFn] = useState({ fn: items => { return items; } });
   const [notify, setNotify] = useState({ isOpen: false, message: '', type: 'info' })
   // #endregion
@@ -137,8 +142,8 @@ export default function RabbitHoleTable(props) {
                     </Chip>
                   </TableCell>
 
-                  <TableCell>{record.name}</TableCell>
-                  <TableCell>{record.description}</TableCell>
+                  <TableCell sx={{maxWidth: '240px'}}>{record.name}</TableCell>
+                  <TableCell sx={{maxWidth: '400px'}}>{record.description}</TableCell>
                   <TableCell>{record.rating}</TableCell>
 
                   {/* //& Solution! */}

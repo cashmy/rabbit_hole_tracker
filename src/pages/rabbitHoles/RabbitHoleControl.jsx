@@ -15,27 +15,13 @@ import { useLocation } from "react-router-dom";
 
 // * Joy UI
 import {
-  AspectRatio,
   Box,
-  Card,
-  CardContent,
-  CardCover,
-  ListItemDecorator,
-  Menu,
-  MenuItem,
   Sheet,
   Typography
 } from '@mui/joy'
 import { maxWidth } from '@mui/system';
 
 // * Mui Icons
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import VerticalAlignBottomIcon from '@mui/icons-material/VerticalAlignBottom';
-import PrintIcon from '@mui/icons-material/Print';
 
 // * Components
 import Controls from '../../components/controls/Controls';
@@ -74,7 +60,7 @@ export default function RabbitHoleControl() {
   const [projectName, setProjectName] = useState('Unknown');
   const [projectImageURL, setProjectImageURL] = useState('');
   const location = useLocation();
-  const [displayGrid, setDisplayGrid] = React.useState(true);
+  const [displayGrid, setDisplayGrid] = React.useState(false);
   const [openPopup, setOpenPopup] = useState(false)
   const [openPopup2, setOpenPopup2] = useState(false)
   const [recordForEdit, setRecordForEdit] = useState(null);
@@ -107,7 +93,13 @@ export default function RabbitHoleControl() {
 
   // #region //* [Event Handlers]
   const addOrEdit = (record, resetForm) => {
-    record = { ...record, project_id: projectId }
+    record = { 
+      ...record, 
+      project_id: projectId, 
+      project: projectId,
+      solution: record.solution || null ,
+      solution_id: record.solution_id || null 
+    }
     let close = false
     if (record.id === 0) {
       addRabbitHole(record)
@@ -268,6 +260,7 @@ export default function RabbitHoleControl() {
                 projectId={projectId} 
                 handleEdit={handleEdit} 
                 handleDelete={handleDelete} 
+                handleStatusChange={handleStatusChange}
                 handleSolution={handleSolution} 
                 handleSolutionDelete={handleSolutionDelete}
                 setCurrentItem={setCurrentItem}
