@@ -7,6 +7,8 @@
  */
 
 // #region [General imports]
+import { DragDropContext } from '@hello-pangea/dnd';
+
 //* Joy UI
 import {
   Box,
@@ -27,6 +29,7 @@ export default function RabbitHoleGrid(props) {
     handleStatusChange,
     handleSolution,
     handleSolutionDelete,
+    handleLogTypeChange
   } = props;
   // #endregion
 
@@ -38,6 +41,25 @@ export default function RabbitHoleGrid(props) {
     }
   }
 
+  // * Handle "Dragging"
+  const onDragEnd = (result) => {
+    // Persist the changes made by the drag action
+    const { destination, source, draggableId } = result;
+
+    if (!destination) {
+      return;
+    }
+    // Check to see if the user dropped the item back into its original position
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+    // * Moving from list to another
+    handleLogTypeChange(draggableId, destination.droppableId)
+  };
+
   return (
     <Box
       sx={{
@@ -47,62 +69,64 @@ export default function RabbitHoleGrid(props) {
         height: 'calc(100vh - 200px)',
       }}
     >
-      {/* //& Impediments */}
-      <RabbitHoleGridTable
-        bgColor={colors.red[600]}
-        titleText="Impediments"
-        projectId={projectId}
-        log_type="i"
-        handleEdit={handleEdit}
-        handleDelete={handleDelete}
-        handleStatusChange={handleStatusChange}
-        handleSolution={handleSolution}
-        handleSolutionDelete={handleSolutionDelete}
-        handleSltn={handleSltn}
-      />
+      <DragDropContext onDragEnd={onDragEnd}>
 
-      {/* //& Distractions */}
-      <RabbitHoleGridTable
-        bgColor={colors.yellow[500]}
-        titleText="Distractions"
-        projectId={projectId}
-        log_type="d"
-        handleEdit={handleEdit}
-        handleDelete={handleDelete}
-        handleStatusChange={handleStatusChange}
-        handleSolution={handleSolution}
-        handleSolutionDelete={handleSolutionDelete}
-        handleSltn={handleSltn}
-      />
+        {/* //& Impediments */}
+        <RabbitHoleGridTable
+          bgColor={colors.red[600]}
+          titleText="Impediments"
+          projectId={projectId}
+          log_type="i"
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+          handleStatusChange={handleStatusChange}
+          handleSolution={handleSolution}
+          handleSolutionDelete={handleSolutionDelete}
+          handleSltn={handleSltn}
+        />
 
-      {/* //& Internal/External Tasks */}
-      <RabbitHoleGridTable
-        bgColor={colors.green[600]}
-        titleText="Tasks"
-        projectId={projectId}
-        log_type="t"
-        handleEdit={handleEdit}
-        handleDelete={handleDelete}
-        handleStatusChange={handleStatusChange}
-        handleSolution={handleSolution}
-        handleSolutionDelete={handleSolutionDelete}
-        handleSltn={handleSltn}
-      />
+        {/* //& Distractions */}
+        <RabbitHoleGridTable
+          bgColor={colors.yellow[500]}
+          titleText="Distractions"
+          projectId={projectId}
+          log_type="d"
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+          handleStatusChange={handleStatusChange}
+          handleSolution={handleSolution}
+          handleSolutionDelete={handleSolutionDelete}
+          handleSltn={handleSltn}
+        />
 
-      {/* //& Unclassified */}
-      <RabbitHoleGridTable
-        bgColor={colors.grey[700]}
-        titleText="Unclassified"
-        projectId={projectId}
-        log_type="u"
-        handleEdit={handleEdit}
-        handleDelete={handleDelete}
-        handleStatusChange={handleStatusChange}
-        handleSolution={handleSolution}
-        handleSolutionDelete={handleSolutionDelete}
-        handleSltn={handleSltn}
-      />
+        {/* //& Internal/External Tasks */}
+        <RabbitHoleGridTable
+          bgColor={colors.green[600]}
+          titleText="Tasks"
+          projectId={projectId}
+          log_type="t"
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+          handleStatusChange={handleStatusChange}
+          handleSolution={handleSolution}
+          handleSolutionDelete={handleSolutionDelete}
+          handleSltn={handleSltn}
+        />
 
+        {/* //& Unclassified */}
+        <RabbitHoleGridTable
+          bgColor={colors.grey[700]}
+          titleText="Unclassified"
+          projectId={projectId}
+          log_type="u"
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+          handleStatusChange={handleStatusChange}
+          handleSolution={handleSolution}
+          handleSolutionDelete={handleSolutionDelete}
+          handleSltn={handleSltn}
+        />
+      </DragDropContext>
     </Box>
   )
 }

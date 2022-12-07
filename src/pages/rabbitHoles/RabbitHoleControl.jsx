@@ -43,7 +43,7 @@ import {
   useDeleteRabbitHoleMutation,
   useFetchAllRabbitHolesQuery,
   useAddRabbitHoleMutation,
-  useChangeRabbitHoleStatusMutation,
+  useChangeRabbitHoleMutation,
   useUpdateRabbitHoleMutation,
 } from '../../features/rabbitHoleSlice';
 import {
@@ -76,7 +76,7 @@ export default function RabbitHoleControl() {
   const { data = [], loading } = useFetchAllRabbitHolesQuery(projectId);
   const [deleteRabbitHole] = useDeleteRabbitHoleMutation();
   const [addRabbitHole] = useAddRabbitHoleMutation();
-  const [chgRabbitHole] = useChangeRabbitHoleStatusMutation();
+  const [chgRabbitHole] = useChangeRabbitHoleMutation();
   const [updateRabbitHole] = useUpdateRabbitHoleMutation();
   const [addSolution] = useAddSolutionMutation();
   const [updateSolution] = useUpdateSolutionMutation();
@@ -223,6 +223,10 @@ export default function RabbitHoleControl() {
       type: "error",
     });
   };
+
+  const handleLogTypeChange = (id, log_type) => {
+    chgRabbitHole({ id, log_type})
+  }
   // #endregion
 
   return (
@@ -264,6 +268,7 @@ export default function RabbitHoleControl() {
                 handleSolution={handleSolution} 
                 handleSolutionDelete={handleSolutionDelete}
                 setCurrentItem={setCurrentItem}
+                handleLogTypeChange={handleLogTypeChange}
                 />
               // : "Table"
               : <RabbitHoleTable

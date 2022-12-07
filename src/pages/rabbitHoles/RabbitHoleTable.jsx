@@ -2,12 +2,12 @@
  * @author Cash Myers
  * @github [https://github.com/cashmy]
  * @create date 2022-06-07 22:22:03
- * @modify date 2022-11-21 22:22:03
+ * @modify date 2022-12-06 23:16:00
  * @desc roject Details (Rabbit Holes) in a standard Table format.
  */
 
 // #region [General imports]
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 //* Joy UI
 import {
   Box,
@@ -34,7 +34,6 @@ import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 
 // * Components
 import Controls from '../../components/controls/Controls';
-import TitleBar from '../../components/titleBar';
 import Notification from '../../components/controls/Notification';
 // #endregion
 
@@ -43,7 +42,6 @@ import useTable from "../../hooks/useTable";
 // #endregion
 
 // #region [Customizable texts]
-const componentTitle = "Rabbit Hole Logs";
 const searchText = "Search by Name, Type, or Description";
 const editToolTip = "Edit an item";
 const deleteToolTip = "Delete an item";
@@ -63,7 +61,7 @@ const columnCells = [
   { id: 'name', label: 'Name' },
   { id: 'description', label: 'Description' },
   { id: 'rating', label: 'Rating' },
-  { id: 'solution', label: 'Sltn' },
+  { id: 'solution', label: 'Sltn' },  // Can't sort on null values (?)
   { id: 'completed', label: 'Cmplt' },
   { id: 'actions', label: 'Actions', disableSorting: true },
 ]

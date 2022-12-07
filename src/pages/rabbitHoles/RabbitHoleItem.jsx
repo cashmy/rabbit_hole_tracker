@@ -11,7 +11,7 @@
 
 // #region [General Imports]
 import { useState, Fragment } from "react";
-import { Draggable } from "react-beautiful-dnd";
+import { Draggable } from '@hello-pangea/dnd';
 import {
   Box,
   Chip,
@@ -29,6 +29,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import Controls from "../../components/controls/Controls";
+import colors from '@mui/joy/colors';
 // #endregion
 
 // #region [Customizable texts]
@@ -45,9 +46,10 @@ export default function RabbitHoleItem(props) {
     item,
     handleEdit,
     handleDelete,
-    handleStatusChange, 
+    handleStatusChange,
     handleSolution,
-    handleSltn
+    handleSltn,
+    index
   } = props
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -76,134 +78,139 @@ export default function RabbitHoleItem(props) {
 
   return (
     <Fragment>
-      {/* <Draggable draggableId={item.id} index={index}>
-        {(provided, snapshot) => ( */}
-      <Box
-        sx={{
-          borderRadius: '10px',
-          display: 'grid',
-          flexDirection: 'row',
-          gridTemplateColumns: '.5fr 2.5fr .45fr .35fr .15fr .20fr .35fr',
-          m: 1,
-          p: 1,
-          bgcolor: 'background.componentBg',
-          // justifyContent: 'space-evenly'
-          justifyItems: 'start',
-          alignItems: 'center'
-        }}
-      >
-        {/* //& Item Rating (1-5) */}
-        <Box sx={{ ml: 2 }}>{item.rating}</Box>
-        {/* //& Name (& Description in toolip) */}
-        <Box>
-          <Tooltip
-            arrow
-            variant="outlined"
-            color="primary"
-            title={
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  maxWidth: 320,
-                  justifyContent: 'center',
-                  p: 1,
-                }}>
-                <Typography
-                  fontSize="sm"
-                  textColor="neutral.400"
-                >
-                  {item.description}
-                </Typography>
-              </Box>
-            }
+      <Draggable key={item.id} draggableId={item.id.toString()} index={index}>
+        {(provided, snapshot) => (
+          <Box
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            isdragging={toString(snapshot.isDragging)}
+
+            sx={{
+              borderRadius: '10px',
+              display: 'grid',
+              flexDirection: 'row',
+              gridTemplateColumns: '.5fr 2.5fr .45fr .35fr .15fr .20fr .35fr',
+              m: 1,
+              p: 1,
+              bgcolor: !snapshot.isDragging ? 'background.componentBg' : colors.grey[700],
+              // justifyContent: 'space-evenly'
+              justifyItems: 'start',
+              alignItems: 'center'
+            }}
           >
-            <Typography> {item.name}</Typography>
-          </Tooltip>
-        </Box>
-        {/* //& Solution Chip (& Solution text in tooltip) */}
-        <Box>
-          {item.solution &&
-            <Tooltip
-              arrow
-              variant="outlined"
-              color="primary"
-              title={
-                <Box
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    maxWidth: 320,
-                    justifyContent: 'center',
-                    p: 1,
-                  }}
-                >
-                  <Box sx={{ display: 'flex', gap: 1, width: '100%', mt: 1 }}>
-                    <EmojiObjectsIcon color="success" />
-                    <Typography fontWeight='lg' fontSize='sm'
+            {/* //& Item Rating (1-5) */}
+            <Box sx={{ ml: 2 }}>{item.rating}</Box>
+            {/* //& Name (& Description in toolip) */}
+            <Box>
+              <Tooltip
+                arrow
+                variant="outlined"
+                color="primary"
+                title={
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      maxWidth: 320,
+                      justifyContent: 'center',
+                      p: 1,
+                    }}>
+                    <Typography
+                      fontSize="sm"
+                      textColor="neutral.400"
+                    >
+                      {item.description}
+                    </Typography>
+                  </Box>
+                }
+              >
+                <Typography> {item.name}</Typography>
+              </Tooltip>
+            </Box>
+            {/* //& Solution Chip (& Solution text in tooltip) */}
+            <Box>
+              {item.solution &&
+                <Tooltip
+                  arrow
+                  variant="outlined"
+                  color="primary"
+                  title={
+                    <Box
                       sx={{
                         display: 'flex',
                         flexDirection: 'column',
-                        alignItems: 'center'
+                        maxWidth: 320,
+                        justifyContent: 'center',
+                        p: 1,
                       }}
                     >
-                      {item.solution.description}
-                    </Typography>
-                  </Box>
+                      <Box sx={{ display: 'flex', gap: 1, width: '100%', mt: 1 }}>
+                        <EmojiObjectsIcon color="success" />
+                        <Typography fontWeight='lg' fontSize='sm'
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center'
+                          }}
+                        >
+                          {item.solution.description}
+                        </Typography>
+                      </Box>
 
-                </Box>
+                    </Box>
+                  }
+                >
+                  <Chip
+                    startDecorator={<EmojiObjectsIcon />}
+                    variant="solid"
+                    color="success"
+                    onClick={() => handleSolution(item)}
+                  >{item.solution.type}</Chip>
+                </Tooltip>
               }
+            </Box>
+            {/* //& Complete Chip */}
+            <Box>
+              {item.completed &&
+                <Chip
+                  startDecorator={<DoneAllIcon />}
+                  variant="solid"
+                  color="primary"
+                />
+              }
+            </Box>
+            {/* //& Dropdown Menu items */}
+            <Controls.ActionButton
+              tooltipText="More options"
+              placement="top"
+              aria-controls={open ? 'basic-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              aria-label={`more options for ${item.name}`}
+              onClick={handleMenuClick}
             >
-              <Chip
-                startDecorator={<EmojiObjectsIcon />}
-                variant="solid"
-                color="success"
-                onClick={() => handleSolution(item)}
-              >{item.solution.type}</Chip>
-            </Tooltip>
-          }
-        </Box>
-        {/* //& Complete Chip */}
-        <Box>
-          {item.completed &&
-            <Chip
-              startDecorator={<DoneAllIcon />}
-              variant="solid"
-              color="primary"
-            />
-          }
-        </Box>
-        {/* //& Dropdown Menu items */}
-        <Controls.ActionButton
-          tooltipText="More options"
-          placement="top"
-          aria-controls={open ? 'basic-menu' : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? 'true' : undefined}
-          aria-label={`more options for ${item.name}`}
-          onClick={handleMenuClick}
-        >
-          <MoreVertIcon sx={{ color: 'darkmagenta' }} />
-        </Controls.ActionButton>
-        {/* //& Solution */}
-        < Controls.ActionButton
-          tooltipText={solutionToolTip}
-          size="md"
-          onClick={() => handleSltn(item)}>
-          <EmojiObjectsIcon sx={{
-            color: item.solution ? "red" : "green"
-          }} />
-        </Controls.ActionButton>
-        {/* //& Done */}
-        <Controls.ActionButton
-          tooltipText={doneToolTip}
-          size="md"
-          onClick={() => handleStatusChange(item.id, !item.completed)}>
-          <DoneIcon sx={{ color: "darkorange" }} />
-        </Controls.ActionButton>
-      </Box>
-      {/* )}
-      </Draggable> */}
+              <MoreVertIcon sx={{ color: 'darkmagenta' }} />
+            </Controls.ActionButton>
+            {/* //& Solution */}
+            < Controls.ActionButton
+              tooltipText={solutionToolTip}
+              size="md"
+              onClick={() => handleSltn(item)}>
+              <EmojiObjectsIcon sx={{
+                color: item.solution ? "red" : "green"
+              }} />
+            </Controls.ActionButton>
+            {/* //& Done */}
+            <Controls.ActionButton
+              tooltipText={doneToolTip}
+              size="md"
+              onClick={() => handleStatusChange(item.id, !item.completed)}>
+              <DoneIcon sx={{ color: "darkorange" }} />
+            </Controls.ActionButton>
+          </Box>
+        )}
+      </Draggable>
 
       <Controls.Notification notify={notify} setNotify={setNotify} />
       <Controls.ConfirmDialog

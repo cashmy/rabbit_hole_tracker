@@ -7,8 +7,9 @@
  */
 
 // #region [General imports]
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { createSelector } from '@reduxjs/toolkit'
+import { Droppable } from '@hello-pangea/dnd';
 
 //* Joy UI
 import {
@@ -58,7 +59,7 @@ export default function RabbitHoleGridTable(props) {
   // #endregion
 
   // #region // * [RTK Data requests]
-  
+
   // Filter the cached results rather than add multiple "cached" lists
   // Use memoization of the cached results to avoid unnecessary renders
   const selectRHByType = useMemo(() => {
@@ -66,7 +67,9 @@ export default function RabbitHoleGridTable(props) {
     return createSelector(
       res => res.data,
       (res, log_type) => log_type,
-      (data, log_type) => data?.filter(rabbitHoles => rabbitHoles.log_type === log_type) ?? emptyArray
+
+      (data, log_type) => data?.filter(x => x.log_type === log_type) ?? emptyArray,
+
     )
   }, [])
 
@@ -76,8 +79,18 @@ export default function RabbitHoleGridTable(props) {
       data: selectRHByType(result, log_type)
     })
   });
-  // #endregion
 
+  // Sort the data by descending "rating" (5 = highest value)
+  data.sort((a, b) => {
+    if (b.rating < a.rating) {
+      return -1; // Need to switch elements
+    }
+    if (b.rating > a.rating) {
+      return 1; // In correct order
+    }
+    return 0; // They equal
+  })
+  // #endregion
 
 
   const handleSltn = (item) => {
@@ -108,36 +121,45 @@ export default function RabbitHoleGridTable(props) {
         {/* <Box sx={{ mt: 2 }}> */}
         <SimpleTitleBar titleText={titleText} bgcolor={`${bgColor}`} />
         {/* </Box> */}
-        <Sheet
-          sx={{
-            ml: 3, mr: 3,
-            borderRadius: '10px',
-            borderWidth: '1px',
-            borderStyle: 'solid',
-            borderColor: bgColor,
-            // borderColor: tstClr,
-            overflowY: 'auto',
-            height: '80%'
-          }}>
-          {loading
-            ? (<Typography> Loading ... </Typography>)
-            : (data.map((record, index) => (
-              <RabbitHoleItem key={index}
-                item={{
-                  ...record,
-                  solution_id: record.solution_id || null
-                }}
-                handleEdit={handleEdit}
-                handleDelete={handleDelete}
-                handleStatusChange={handleStatusChange}
-                handleSolution={handleSolution}
-                handleSltn={handleSltn}
-              />
-            )))
-          }
 
-
-        </Sheet>
+        <Droppable droppableId={log_type}>
+          {(provided, snapshot) => (
+            <Sheet
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              isdraggingover={toString(snapshot.isDraggingOver)}
+              sx={{
+                ml: 3, mr: 3,
+                borderRadius: '10px',
+                borderWidth: '1px',
+                borderStyle: 'solid',
+                borderColor: bgColor,
+                // borderColor: tstClr,
+                overflowY: 'auto',
+                height: '80%'
+              }}>
+              {loading
+                ? (<Typography> Loading ... </Typography>)
+                : (data.map((record, index) => 
+                (    
+                  <RabbitHoleItem key={index}
+                    item={{
+                      ...record,
+                      solution_id: record.solution_id || null
+                    }}
+                    handleEdit={handleEdit}
+                    handleDelete={handleDelete}
+                    handleStatusChange={handleStatusChange}
+                    handleSolution={handleSolution}
+                    handleSltn={handleSltn}
+                    index={index}
+                  />
+                )
+                ))
+              }
+            </Sheet>
+          )}
+        </Droppable>
       </Sheet>
     </Box >
 

@@ -30,7 +30,7 @@ export const apiRabbitHoleSlice = baseApiSlice.injectEndpoints({
                 invalidatesTags: ["RabbitHoles"],
             }),
 
-            changeRabbitHoleStatus: build.mutation({
+            changeRabbitHole: build.mutation({
                 query: (body) => ({
                     url: `/rabbit_holes/${body.id}/`,
                     method: "PATCH",
@@ -65,7 +65,7 @@ export const {
     useFetchAllRabbitHolesQuery,
     useFetchAllRabbitHolesAdminQuery,
     useAddRabbitHoleMutation,
-    useChangeRabbitHoleStatusMutation,
+    useChangeRabbitHoleMutation,
     useUpdateRabbitHoleMutation,
     useDeleteRabbitHoleMutation,
 } = apiRabbitHoleSlice;
