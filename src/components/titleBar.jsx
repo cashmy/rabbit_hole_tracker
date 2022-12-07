@@ -42,6 +42,7 @@ export default function TitleBar(props) {
     avatarIcon = "none",
     avatarImage = "",
     componentTitle,
+    toolTipText,
 
     addFab,
     primaryColor,
@@ -80,7 +81,7 @@ export default function TitleBar(props) {
     <Sheet
       variant="outlined"
       sx={{
-        display: "flex",
+        // display: "flex",
         flexDirection: "flex-row",
         alignItems: "center",
         borderRadius: 'sm',
@@ -126,6 +127,7 @@ export default function TitleBar(props) {
 
       {/* //& Component Title */}
       <Typography variant='h6' sx={{ marginLeft: 1.5, marginTop: .25 }} >
+        {toolTipText && <Tooltip></Tooltip>}
         {componentTitle || "Component Title Goes Here"}
       </Typography>
 
