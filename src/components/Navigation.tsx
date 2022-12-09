@@ -62,7 +62,7 @@ export default function Navigation() {
             <ListItemButton
               variant="soft"
               color="primary"
-              component={RouterLink} to="/"
+              component={RouterLink} to="/dashboard"
             >
               <ListItemDecorator sx={{ color: 'inherit' }}>
                 <FolderOpenIcon fontSize="small" />
@@ -98,12 +98,12 @@ export default function Navigation() {
           {/* //& Image Library*/}
           <ListItem>
             <ListItemButton
-              component={RouterLink} to="/imageLibraryV1"
+              component={RouterLink} to="/"
             >
               <ListItemDecorator sx={{ color: 'neutral.500' }}>
                 <ImageTwoToneIcon />
               </ListItemDecorator>
-              <ListItemContent>Image Library (v1) </ListItemContent>
+              <ListItemContent>404 Page NF</ListItemContent>
             </ListItemButton>
           </ListItem>
 

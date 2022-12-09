@@ -69,13 +69,13 @@ const columnCells = [
 // ^ MAIN COMPONENT
 export default function RabbitHoleTable(props) {
   // #region //* [Local State]
-  const { 
-    projectId, 
-    handleEdit, 
-    handleDelete, 
-    handleStatusChange, 
-    handleSolution, 
-    handleSolutionDelete, 
+  const {
+    projectId,
+    handleEdit,
+    handleDelete,
+    handleStatusChange,
+    handleSolution,
+    handleSolutionDelete,
   } = props;
   const [filterFn, setFilterFn] = useState({ fn: items => { return items; } });
   const [notify, setNotify] = useState({ isOpen: false, message: '', type: 'info' })
@@ -89,6 +89,7 @@ export default function RabbitHoleTable(props) {
   const {
     TblContainer,
     TblHead,
+    TblPagination,
     recordsAfterPagingAndSorting
   } = useTable(data, columnCells, filterFn,);
 
@@ -140,8 +141,8 @@ export default function RabbitHoleTable(props) {
                     </Chip>
                   </TableCell>
 
-                  <TableCell sx={{maxWidth: '240px'}}>{record.name}</TableCell>
-                  <TableCell sx={{maxWidth: '400px'}}>{record.description}</TableCell>
+                  <TableCell sx={{ maxWidth: '240px' }}>{record.name}</TableCell>
+                  <TableCell sx={{ maxWidth: '400px' }}>{record.description}</TableCell>
                   <TableCell>{record.rating}</TableCell>
 
                   {/* //& Solution! */}
@@ -162,24 +163,25 @@ export default function RabbitHoleTable(props) {
                         >
                           <Typography
                             fontSize="sm"
-                            textColor="blue" 
-                            // color="neutral"
-                            >
+                            textColor="blue"
+                          // color="neutral"
+                          >
                             {record.name}
                           </Typography>
                           <Typography
                             fontSize="sm"
                             textColor="neutral.600"
-                            >
+                          >
                             {record.description}
                           </Typography>
                           <Box sx={{ display: 'flex', gap: 1, width: '100%', mt: 1 }}>
                             <EmojiObjectsIcon color="success" />
                             <Typography fontWeight='lg' fontSize='sm'
-                              sx={{ display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center' 
-                                  }}
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center'
+                              }}
                             >
                               {record.solution.description}
                             </Typography>
@@ -251,8 +253,10 @@ export default function RabbitHoleTable(props) {
               ))
             )
             }
+
           </TableBody>
         </TblContainer>
+        <TblPagination />
 
       </TableContainer >
 

@@ -119,6 +119,7 @@ export default function TitleBar(props) {
         <IconButton
           size="lg"
           variant="plain"
+          sx={{ ml: 1 }}
         >
           {avatarImage}
         </IconButton>

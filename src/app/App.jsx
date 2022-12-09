@@ -48,6 +48,7 @@ import SignInSide from '../pages/signIn/SignInSide';
 import RegistrationSide from '../pages/signIn/RegistrationSide';
 import RabbitHoleControl from '../pages/rabbitHoles/RabbitHoleControl';
 import PageNotFound from '../404';
+import DashboardControl from '../pages/dashboards/dashboardControl';
 // #endregion
 
 
@@ -60,7 +61,7 @@ const BackgroundPaper = styled('div')(({ theme }) => ({
   backgroundSize: "cover",
   backgroundAttachment: "fixed",
   marginTop: '0px',
-  height: 'calc(100vh - 0px)',
+  height: '100vh',
   backgroundImage: theme.palette.mode === "dark"
     ? `url(${BackgroundImage})`
     : `url(${BackgroundImageLight})`,
@@ -220,6 +221,7 @@ function App() {
                 <Route path="/registration" element={<RegistrationSide />} />
                 <Route path="/login" element={<SignInSide />} />
                 <Route path="/rabbitHole" element={<RabbitHoleControl />} />
+                <Route path="/dashboard" element={<DashboardControl />} />
                 <Route path="*" element={<PageNotFound />} />
               </Routes>
 
