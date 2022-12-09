@@ -24,7 +24,7 @@ const Controls = {
   // Popup,
   RadioGroup,
   Select,
-  // Switch,
+  Switch,
   TextareaAuto,
 };
 

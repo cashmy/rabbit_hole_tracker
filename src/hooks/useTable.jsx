@@ -8,7 +8,7 @@ export default function useTable(records, columnCells, filterFn, theadColor, ...
 
   const pages = [5, 10, 25, { label: "All", value: -1 }];
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(pages[page]);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [order, setOrder] = useState();
   const [orderBy, setOrderBy] = useState();
 
@@ -84,7 +84,8 @@ export default function useTable(records, columnCells, filterFn, theadColor, ...
 
   const TblPagination = () => (
     <TablePagination
-      component="div"
+      sx={{ display: 'flex'}}
+      component="Box"
       page={page}
       rowsPerPageOptions={pages}
       rowsPerPage={rowsPerPage}

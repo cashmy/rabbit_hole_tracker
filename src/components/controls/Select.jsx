@@ -5,14 +5,15 @@ import FormLabel from '@mui/joy/FormLabel';
 import FormHelperText from '@mui/joy/FormHelperText';
 
 const Select = (props) => {
-    const { name, label, value, error = null, onChange, placeholder, size, variant, options } = props
+    const { name, label, value, defaultValue, error = null, onChange, placeholder, size, variant, options } = props
 
     return (
         <FormControl variant='outlined' 
             {...(error && { error: true })}
         >
-            <FormLabel sx={{fontSize:'xs'}}> {label || 'Select Label'}</FormLabel>
+            <FormLabel sx={{fontSize:'xs', mt:1}}> {label || 'Select Label'}</FormLabel>
             <JoySelect
+                defaultValue={defaultValue || ''}
                 variant={variant || 'soft'}
                 size={size || 'sm'}
                 action={useRef(null)}
@@ -25,7 +26,7 @@ const Select = (props) => {
                 {/* <MenuItem key='999' value="None">None</MenuItem> */}
                 {options &&
                     options.map(
-                        item => (<Option key={item.id} value={item.id}>{item.title}</Option>)
+                        (item, index) => (<Option key={index} value={item.id}>{item.title}</Option>)
                     )
                 }
             </JoySelect>
