@@ -85,7 +85,7 @@ export default function useTable(records, columnCells, filterFn, theadColor, ...
   const TblPagination = () => (
     <TablePagination
       sx={{ display: 'flex'}}
-      component="Box"
+      component="div"
       page={page}
       rowsPerPageOptions={pages}
       rowsPerPage={rowsPerPage}

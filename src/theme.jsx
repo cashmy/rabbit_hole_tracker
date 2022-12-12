@@ -64,7 +64,7 @@ const muiTheme = extendMuiTheme({
         },
         divider: colors.grey[800],
         text: {
-          primary: colors.grey[100],
+          primary: colors.grey[200],
           secondary: colors.grey[300],
         },
       },

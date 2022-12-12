@@ -63,7 +63,7 @@ export default function PageNotFound() {
             mt: 3.5,
             borderRadius: '10px',
             height: '65vh',
-            bgcolor: 'background.component.Bg',
+            bgcolor: 'background.componentBg',
           }}>
           <Image
             src={RabbitsLooking}

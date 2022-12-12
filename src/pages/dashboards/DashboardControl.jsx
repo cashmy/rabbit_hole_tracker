@@ -72,11 +72,11 @@ export default function DashboardControl() {
           <Tab
             variant={index === 1 ? 'solid' : 'plain'}
             color={index === 1 ? 'primary' : 'neutral'}
-          >Behaviorial Analysis</Tab>
+          >Project Details</Tab>
           <Tab
             variant={index === 2 ? 'solid' : 'plain'}
             color={index === 2 ? 'primary' : 'neutral'}
-          >Project Details</Tab>
+          >Behaviorial Analysis</Tab>
         </TabList>
 
 
@@ -96,8 +96,8 @@ export default function DashboardControl() {
         >
           {/* //* Component Panels */}
           <TabPanel value={0}> <DashOverview /> </TabPanel>
-          <TabPanel value={1}> <DashBehavior /> </TabPanel>
-          <TabPanel value={2}> <DashProjDetail /> </TabPanel>
+          <TabPanel value={1}> <DashProjDetail /> </TabPanel>
+          <TabPanel value={2}> <DashBehavior /> </TabPanel>
         </Sheet>
       </Tabs>
     </Box>
