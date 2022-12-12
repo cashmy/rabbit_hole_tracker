@@ -73,7 +73,7 @@ export default function RabbitHoleControl() {
   // #endregion
 
   // #region // * [RTK Data requests]
-  const { data = [], loading } = useFetchAllRabbitHolesQuery(projectId);
+  const { data = [], isLoading } = useFetchAllRabbitHolesQuery(projectId);
   const [deleteRabbitHole] = useDeleteRabbitHoleMutation();
   const [addRabbitHole] = useAddRabbitHoleMutation();
   const [chgRabbitHole] = useChangeRabbitHoleMutation();

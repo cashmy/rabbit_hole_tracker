@@ -82,7 +82,7 @@ export default function RabbitHoleTable(props) {
   // #endregion
 
   // #region // * [RTK Data requests]
-  const { data = [], loading } = useFetchAllRabbitHolesQuery(projectId);
+  const { data = [], isLoading } = useFetchAllRabbitHolesQuery(projectId);
   // #endregion
 
   // & Table Constants
@@ -109,10 +109,10 @@ export default function RabbitHoleTable(props) {
         <TblContainer stickyHeader={true}>
           <TblHead />
           <TableBody>
-            {loading ? (
+            {isLoading ? (
               <TableRow key="999">
                 <TableCell>
-                  <Typography> Loading ... </Typography>
+                  <Typography> isLoading ... </Typography>
                 </TableCell>
               </TableRow>
             ) : (

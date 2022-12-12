@@ -76,7 +76,7 @@ export default function ProjectCards() {
   // #endregion
 
   // #region // * [RTK Data requests]
-  const { data = [], loading } = useFetchAllProjectsByArchiveStsQuery(archiveStatus);
+  const { data = [], isLoading } = useFetchAllProjectsByArchiveStsQuery(archiveStatus);
   const [deleteProject] = useDeleteProjectMutation();
   const [changeProjectStatus] = useChangeProjectStatusMutation();
   const [addProject] = useAddProjectMutation();
@@ -195,8 +195,8 @@ export default function ProjectCards() {
       />
 
       {/* //* Page: Card Table Body */}
-      {loading ? (
-        <Typography>Loading...</Typography>
+      {isLoading ? (
+        <Typography>isLoading...</Typography>
       ) : (
         data.map((item, index) => (
           <Card

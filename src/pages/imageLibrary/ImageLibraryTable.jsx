@@ -76,7 +76,7 @@ export default function ImageLibraryTable(props) {
   // #endregion
 
   // #region // * [RTK Data requests]
-  const { data = [], loading } = useFetchAllImagesAdminQuery();
+  const { data = [], isLoading } = useFetchAllImagesAdminQuery();
   const [deleteImage] = useDeleteImageMutation();
   const [addImage] = useAddImageMutation();
   const [updateImage] = useUpdateImageMutation();
@@ -257,8 +257,8 @@ export default function ImageLibraryTable(props) {
                   gridTemplateColumns='repeat(auto-fit, minmax(150px, 1fr))'
                 >
                   {/* //& Page: Card Table Body */}
-                  {loading ? (
-                    <Typography>Loading...</Typography>
+                  {isLoading ? (
+                    <Typography>isLoading...</Typography>
                   ) : (
                     data.map((item, index) => (
                       <Card

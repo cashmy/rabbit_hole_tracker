@@ -71,7 +71,7 @@ export default function ImageLibraryTableV1() {
   // #endregion
 
   // #region // * [RTK Data requests]
-  const { data = [], loading } = useFetchAllImagesAdminQuery();
+  const { data = [], isLoading } = useFetchAllImagesAdminQuery();
   const [deleteImage] = useDeleteImageMutation();
   const [addImage] = useAddImageMutation();
   const [updateImage] = useUpdateImageMutation();
@@ -196,8 +196,8 @@ export default function ImageLibraryTableV1() {
       />
 
       {/* //* Page: Card Table Body */}
-      {loading ? (
-        <Typography>Loading...</Typography>
+      {isLoading ? (
+        <Typography>isLoading...</Typography>
       ) : (
         data.map((item, index) => (
           <Card

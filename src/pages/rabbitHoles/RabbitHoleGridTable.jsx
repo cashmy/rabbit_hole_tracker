@@ -73,7 +73,7 @@ export default function RabbitHoleGridTable(props) {
     )
   }, [])
 
-  const { data = [], loading } = useFetchAllRabbitHolesQuery(projectId, {
+  const { data = [], isLoading } = useFetchAllRabbitHolesQuery(projectId, {
     selectFromResult: result => ({
       ...result,
       data: selectRHByType(result, log_type)
@@ -138,8 +138,8 @@ export default function RabbitHoleGridTable(props) {
                 overflowY: 'auto',
                 height: '80%'
               }}>
-              {loading
-                ? (<Typography> Loading ... </Typography>)
+              {isLoading
+                ? (<Typography> isLoading ... </Typography>)
                 : (data.map((record, index) => 
                 (    
                   <RabbitHoleItem key={index}
